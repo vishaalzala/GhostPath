@@ -2,61 +2,37 @@
 
 **Linux Privacy & Network Security Toolkit**
 
-> **Status:** Legacy Anonym8 codebase undergoing a proposed modernization. Not production-ready or verified on current Kali Linux releases.
+GhostPath is an educational Linux privacy and network-security project for learning Tor routing, network diagnostics and safe configuration management on owned or authorized systems.
 
-GhostPath is an educational project exploring Linux networking, privacy routing, Tor, proxy configuration, and defensive network diagnostics.
+> **Status:** Rebranded legacy scripts. The original networking logic has not been modernized, verified or made production-ready. Do not run the installer on a daily-use machine; use an isolated VM and snapshot.
 
-## What's in this repository?
+## Available source components
 
-The original Anonym8 project contains legacy shell scripts for Tor-based networking, proxy configuration, DNS management, firewall rules, hostname/MAC changes, and a desktop launcher. These components have **not** yet been modernized or security-tested. The project name and documentation have been refreshed, but a stable GhostPath v2 application has **not** been released.
+- `ghostpath` main command-line program
+- `ghostpath-on` and `ghostpath-off` helper scripts
+- `ghostpath-gui` legacy GTKdialog interface
+- Tor, Privoxy and Polipo legacy configurations
+- Network configuration, firewall and DNS management scripts
 
-## Important safety warning
+These filenames correspond to the newly prepared source ZIP. **The ZIP and its source files are not yet present in this GitHub repository.** Download the prepared archive from the project delivery and review locally before use.
 
-The legacy installer and scripts can change system DNS settings, proxy configuration, and firewall rules. Do **not** run the legacy installer on a daily-use machine. Use a disposable, isolated Linux VM, snapshot it first, and inspect scripts before execution. Tor is not a guarantee of anonymity.
+## Getting started
 
-## Current features (legacy)
+1. Use a disposable Kali or Debian VM for evaluation.
+2. Inspect `INSTALL.sh` and all scripts before running them.
+3. Create a snapshot before testing any scripts that change firewall or DNS settings.
+4. Treat installation, automatic restoration and distribution compatibility as unverified.
 
-- Tor integration and transparent proxy configuration
-- Privoxy and Polipo configuration files
-- DNS and iptables-based network configuration
-- MAC address and hostname management
-- CLI entry points `anonym8`, `anON` and `anOFF`
-- Legacy Linux desktop launcher and GUI
+There is no supported production installation procedure yet.
 
-**Availability is not compatibility:** listed features are present in the old source, but functionality on recent distributions remains unverified.
+## Roadmap
 
-## GhostPath v2 goals (planned, not implemented)
-
-- Modern nftables-compatible firewall handling
-- Network configuration backup and reliable rollback
-- Tor bootstrap health checks and SOCKS integration
-- DNS and IPv6 leak diagnostics
-- Optional fail-closed kill switch with recovery path
-- Privilege separation and secure configuration validation
-- Modern GUI and documented CLI
-- Automated tests, reproducible packages, and CI security checks
-- Guided educational labs for owned or authorized systems
-
-See [ROADMAP.md](ROADMAP.md) for the implementation priorities.
-
-## Getting started (safe inspection)
-
-1. Use a throwaway Kali/Debian VM for research.
-2. Review the source and configuration files before running anything.
-3. Read [README_LEGACY.md](README_LEGACY.md) for historical documentation; its installation steps are not endorsed.
-4. Track modernization work in the roadmap.
-5. Do not enable firewall or DNS-changing scripts without a validated rollback and VM snapshot.
-
-There is **no supported v2 installation command** yet.
+See [ROADMAP.md](ROADMAP.md) for planned secure rollback, nftables, modern Tor integration, leak checks, GUI, packaging and automated tests.
 
 ## Responsible use
 
-Use GhostPath only on devices, networks, and test environments you own or are explicitly authorized to manage. Do not present this toolkit as a foolproof anonymity solution.
+For ethical research and systems or networks you own or are authorized to administer. Tor does not guarantee anonymity.
 
-## Contributions
+## Attribution and licensing
 
-Issues and pull requests covering reliability, packaging, documentation, privacy diagnostics, test coverage, and secure recovery behaviour are welcome. Please avoid exposing private IP addresses, credentials, or personal data in diagnostics.
-
-## Project heritage
-
-GhostPath is based on the educational Anonym8 project. Its original documentation is preserved in [README_LEGACY.md](README_LEGACY.md). Existing command/file names remain legacy identifiers until a tested migration is implemented.
+Original script contributors are acknowledged in source comments. The supplied archive did not contain a clearly identified license; confirm permissions before publishing derivative code publicly.
