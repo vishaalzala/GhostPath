@@ -1,13 +1,11 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=ghostpath-gui
-GenericName=ghostpath-gui
-Comment=Advanced ID Spoofer
-Keywords=Spoof
-Icon=/opt/ghostpath/Anons.jpeg
+Name=GhostPath
+GenericName=GhostPath
+Comment=Educational privacy and network security tool
+Icon=/opt/ghostpath/ghostpath.png
 TryExec=/opt/ghostpath/ghostpath-gui
 Exec=/opt/ghostpath/ghostpath-gui
 Categories=System;Monitor;
-X-GNOME-Autostart-Delay=30
 StartupNotify=true
