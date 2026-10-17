@@ -1,6 +1,6 @@
 # GhostPath v2 — Python Security Toolkit
 
-**Current development version: 2.0.0a3 (alpha).**
+**Current development version: 2.0.0a4 (alpha).**
 Privacy diagnostics, defensive Wi-Fi assessments and offline DDoS education.
 **This is NOT a production anonymity tool, live Wi-Fi attack suite, or DDoS generator.**
 
@@ -154,3 +154,27 @@ safety restrictions are in [Installation and Maintenance](docs/INSTALLATION.md).
 
 Passive IPv6 interface state is now included in the privacy diagnostics,
 but **no IPv6 leak test or network protection** is claimed.
+
+
+## Release evidence, real Kali verification, and safe alpha installation
+
+This is still a **development alpha**, not an anonymity service or a
+production penetration testing tool. The Python build deliberately makes
+no firewall, DNS, MAC or system routing changes.
+
+A non-root local acceptance check is available:
+
+    bash scripts/acceptance-local.sh
+
+It runs safe diagnostics and compares fingerprints of DNS, routes and
+forwarding state. It cannot certify nftables state, Tor anonymity or Wi-Fi
+driver compatibility. On a disposable Kali VM, follow the manual
+[Kali acceptance checklist](docs/KALI_ACCEPTANCE.md).
+
+GitHub Actions prepares development wheel/source artifacts, checksums,
+CycloneDX runtime inventory, and build attestations. See
+[Supply-chain verification](docs/SUPPLY_CHAIN.md). These are *not*
+signed stable production packages.
+
+The optional desktop GUI now also supports authorised offline Zeek JSON
+connection logs under the Zeek JSON tab. All imports are local and bounded.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0a4 — Verification and handoff alpha (2026-10-17)
+- Added supply-chain verification workflow for development wheels, source,
+  CycloneDX runtime inventory, SHA-256 checksums and GitHub attestations.
+- Added non-root local acceptance check for safe CLI and network-state
+  fingerprint comparisons.
+- Extended GUI's offline log import tabs with Zeek JSON summaries.
+- Added manual Kali acceptance handoff and supply-chain guidance.
+- Stable release remains blocked; no live network-changing features enabled.
+
 ## 2.0.0a3 — Release hardening alpha (2026-10-17)
 - Added non-root per-user install/update/uninstall scripts, stable launcher and rollback checks.
 - Added headless Qt GUI CI smoke test and user-install lifecycle CI workflow.

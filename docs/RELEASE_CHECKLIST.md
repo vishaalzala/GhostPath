@@ -1,7 +1,7 @@
 # GhostPath v2 — Go-live gates and test evidence
 
 ## Current verdict: NO-GO for stable/production distribution
-The Python 2.0.0a3 build is a development alpha with isolated diagnostics
+The Python 2.0.0a4 build is a development alpha with isolated diagnostics
 and offline educational features. A green GitHub Actions run alone is not
 proof of privacy protection, installation portability or correct recovery.
 
@@ -11,7 +11,7 @@ proof of privacy protection, installation portability or correct recovery.
 | Real Kali VM install | Install/upgrade/smoke-test on clean release image | Pending |
 | Debian and Parrot compatibility | Smoke tests in representative VMs | Pending |
 | Qt GUI functional QA | Open and navigate in desktop session | Headless Qt smoke passed; real desktop/accessibility pending |
-| Package integrity | Check source/wheel, signatures, SBOM | Source/wheel build passed; signing/SBOM pending |
+| Package integrity | Check source/wheel, provenance, SBOM | Development workflow added; verify its CI completion and artifacts. Manual audit pending. |
 | Third-party code rights | Historical legacy provenance and license decision | Pending |
 | Threat model and vulnerability review | Independent engineer sign-off | Pending |
 | Sensitive-output review | No credentials, MACs, SSIDs in exported reports | Unit tests present; manual pending |
@@ -52,3 +52,11 @@ Kali/Debian/Parrot test run. Document network rollback on failures.
 
 Evidence is in the repository's GitHub Actions runs for develop-v2. Stable
 release remains blocked regardless of automated test success.
+
+
+## Development build handoff — 2.0.0a4
+
+See docs/SUPPLY_CHAIN.md for the source and wheel provenance workflow and
+docs/KALI_ACCEPTANCE.md for test instructions. Automated environment tests
+cannot stand in for real wireless hardware, reboot and desktop evaluation.
+No stable GitHub release is authorised solely from these CI checks.

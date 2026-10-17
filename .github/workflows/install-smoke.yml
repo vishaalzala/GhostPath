@@ -26,6 +26,7 @@ jobs:
           bash scripts/install-user.sh
           "$HOME/.local/bin/ghostpath-v2" --version
           "$HOME/.local/bin/ghostpath-v2" doctor --json
+          bash scripts/acceptance-local.sh
           test -L "$HOME/.local/bin/ghostpath-v2"
           test -d "$HOME/.local/share/ghostpath-v2"
           bash scripts/update-user.sh

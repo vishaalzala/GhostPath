@@ -66,3 +66,15 @@ before installing v2. V2 cannot repair arbitrary historical configurations.
   inspect its target before cleanup.
 - No desktop display: use the CLI, which does not need Qt.
 - Installed Tor is not evidence that GhostPath is routing anything through it.
+
+
+## Smoke-test this installation
+
+On an isolated test machine with a non-root account, run:
+
+    bash scripts/acceptance-local.sh
+
+The check compares a limited set of before/after DNS and route fingerprints
+and runs safe CLI diagnostics. This is not equivalent to real network
+recovery testing, does not inspect privileged firewall rules and must not
+be treated as a proof of anonymous or protected browsing.

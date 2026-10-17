@@ -194,3 +194,20 @@ bash scripts/uninstall-user.sh
 The optional desktop interface uses `bash scripts/install-user.sh --gui`.
 See [Installation and Maintenance](INSTALLATION.md). The installer never
 rewrites DNS, firewall or Tor settings, and it refuses root privileges.
+
+
+## Local acceptance check and build artifacts (v2.0.0a4)
+
+On a disposable Kali VM with GhostPath installed as a normal user:
+
+    bash scripts/acceptance-local.sh
+
+The script runs read-only diagnostics and compares DNS, route and forwarding
+fingerprints. It does not test anonymity or permission to use networks.
+
+View the full [Kali Acceptance Checklist](KALI_ACCEPTANCE.md) before
+approving any public release. [Build Verification](SUPPLY_CHAIN.md)
+explains development wheel/SDist, SBOM, SHA-256 and attestation outputs.
+
+In the optional GUI, the Zeek JSON tab can import a locally supplied,
+authorised Zeek connection log. No packets are captured or generated.

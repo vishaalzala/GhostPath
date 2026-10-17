@@ -21,7 +21,7 @@ def check() -> None:
         print("No GhostPath tab view found", file=sys.stderr)
     else:
         titles = {tab.tabText(i) for tab in tabs for i in range(tab.count())}
-        needed = {"Dashboard", "Privacy", "MAC Privacy", "Wi-Fi Audit", "DDoS Defence"}
+        needed = {"Dashboard", "Privacy", "MAC Privacy", "Wi-Fi Audit", "DDoS Defence", "Router JSON", "Suricata EVE", "Zeek JSON", "Reports"}
         if needed.issubset(titles):
             print("GUI smoke passed:", sorted(titles))
             result["passed"] = True
