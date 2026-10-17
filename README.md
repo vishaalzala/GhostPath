@@ -18,7 +18,7 @@ Running Tor is not evidence that applications use Tor.
 | MAC Privacy | Interface inventory without publishing raw MACs; profile previews |
 | Wi-Fi Security | Cached connected-network review and WPA2/WPA3/WEP posture guidance |
 | Offline PCAP | Strict-size classic PCAP metadata parsing; no packet payload export |
-| DDoS Defence | Cumulative local counters, bounded CSV anomaly analysis, synthetic scenarios |
+| DDoS Defence | Cumulative counters, bounded CSV and EVE/Zeek JSONL log analysis, synthetic scenarios |
 | Learning | Four offline guided lab exercises |
 | Reports | Explicitly requested new local JSON reports with private file permissions |
 | Desktop | Optional PySide6 multi-tab read-only dashboard |
@@ -34,33 +34,33 @@ is a development interface, not a validated stable release.
 If you previously installed the Bash version, do NOT run its old installer or
 the old ghostpath-on/off commands. Work in a new folder.
 
-\`\`\`bash
+```bash
 cd ~/Desktop
 git clone -b develop-v2 https://github.com/vishaalzala/GhostPath.git GhostPath-v2
 cd GhostPath-v2
 bash scripts/setup-dev.sh
 .venv/bin/ghostpath --version
 .venv/bin/ghostpath doctor --json
-\`\`\`
+```
 
 If Python venv creation fails, use the Kali package manager to install
-\`python3-venv\` before rerunning setup. The installer only writes into the
+`python3-venv` before rerunning setup. The installer only writes into the
 project-local Python virtual environment; it does not modify network settings.
 
 ### Optional desktop interface
 
-\`\`\`bash
+```bash
 source .venv/bin/activate
 python -m pip install -e '.[gui]'
 ghostpath gui
-\`\`\`
+```
 
 A graphical desktop session is required. GUI dependencies are optional
 because they may be large and are not needed for terminal use.
 
 ## Usage
 
-\`\`\`bash
+```bash
 ghostpath doctor --json
 ghostpath status --json
 ghostpath privacy status --json
@@ -73,26 +73,28 @@ ghostpath wifi audit --json
 ghostpath defense counters --json
 ghostpath defense demo --scenario surge --json
 ghostpath defense analyze --file data.csv --json
+ghostpath defense events --file authorised-eve.jsonl --format eve --json
 ghostpath wifi capture --file authorized-sample.pcap --json
 ghostpath labs list --json
 ghostpath labs run traffic-anomaly --json
 ghostpath report create --output my-report.json --json
 ghostpath release-check --json
-\`\`\`
+```
 
-For CSV input use a file with the columns \`minute,requests,errors\`.
+For CSV input use a file with the columns `minute,requests,errors`.
 Minutes must increase; max 2,000 rows and 1 MB. All analysis is offline.
 Classic Ethernet, 802.11 and radiotap PCAPs are supported (up to 16 MB and
 10,000 packets); PCAPNG is not supported.
 
+See [Event Log Import Guide](docs/EVENT_LOGS.md) for Suricata and Zeek formats.
 See [User Guide](docs/USER_GUIDE.md) for examples, output interpretation,
 installation troubleshooting and privacy caveats.
 
 ## Testing
 
-\`\`\`bash
+```bash
 bash scripts/test.sh
-\`\`\`
+```
 
 GitHub Actions runs unit tests across Python 3.11–3.13 and builds packages.
 Passing CI does **not** prove Kali hardware compatibility, Tor routing,
@@ -100,13 +102,13 @@ wireless security or anonymity.
 
 ## Branches and safety
 
-- \`legacy-v1\`: frozen legacy networking code (not production-safe).
-- \`develop-v2\`: Python development and offline defensive training.
-- \`main\`: preserved until the project passes go-live release gates.
+- `legacy-v1`: frozen legacy networking code (not production-safe).
+- `develop-v2`: Python development and offline defensive training.
+- `main`: preserved until the project passes go-live release gates.
 
 Consult [Roadmap](ROADMAP.md), [Release Checklist](docs/RELEASE_CHECKLIST.md),
 [Security](SECURITY.md), [Architecture](docs/ARCHITECTURE.md), and
-[Provenance](CREDITS.md) before using or distributing the code.
+[Provenance](CREDITS.md) and [Threat Model](docs/THREAT_MODEL.md) before using or distributing the code.
 
 ## Contributors and licensing
 

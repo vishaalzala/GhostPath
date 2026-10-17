@@ -10,6 +10,7 @@ from typing import Any
 from . import __version__
 from .captures import inspect_pcap
 from .defense import analyze, example_events, parse_csv
+from .eventlog import analyze_event_file
 from .diagnostics import doctor, status
 from .labs import list_labs, run_lab
 from .mac_privacy import plan as mac_plan, status as mac_status
@@ -84,6 +85,10 @@ def make_parser() -> argparse.ArgumentParser:
     capture = sub.add_parser("capture", help="Inspect metadata of a local classic PCAP")
     capture.add_argument("--file", required=True, type=Path)
     _json_option(capture)
+    offline_events = sub.add_parser("events", help="Analyse authorised offline Suricata/Zeek JSONL")
+    offline_events.add_argument("--file", required=True, type=Path)
+    offline_events.add_argument("--format", choices=["auto", "eve", "zeek"], default="auto")
+    _json_option(offline_events)
     _json_option(sub.add_parser("counters", help="Read local sysfs interface counters"))
 
     labs = commands.add_parser("labs", help="Offline educational exercises")
@@ -141,6 +146,8 @@ def main(argv: list[str] | None = None) -> int:
                 result = analyze(example_events(args.scenario))
             elif args.action == "analyze":
                 result = analyze(parse_csv(args.file))
+            elif args.action == "events":
+                result = analyze_event_file(args.file, args.format)
             elif args.action == "capture":
                 result = inspect_pcap(args.file)
             else:
