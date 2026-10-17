@@ -22,15 +22,19 @@ def _unit_status(unit: str) -> dict[str, str]:
 def tor_status() -> dict[str, object]:
     units = [_unit_status("tor@default.service"), _unit_status("tor.service")]
     valid = [u for u in units if u["load"] == "loaded"]
-    # Prefer an active instance over inactive units; a wrapper may not carry Tor traffic.
-    candidate = next((u for u in valid if u["active"] == "active"), None)
+    # Prefer an actually running service instance. The tor.service wrapper
+    # on Debian-family systems may be 'active (exited)' without any daemon.
+    candidate = next(
+        (u for u in valid if u["active"] == "active" and u["sub"] == "running"),
+        None,
+    )
     if candidate is None:
         candidate = valid[0] if valid else None
     return {
         "installed_binary": run_readonly(["tor", "--version"]).available,
         "units": units,
         "selected_unit": candidate["unit"] if candidate else None,
-        "service_active": bool(candidate and candidate["active"] == "active"),
+        "service_active": bool(candidate and candidate["active"] == "active" and candidate["sub"] == "running"),
         "routing_verified": False,
         "warning": "A running Tor service does not prove application traffic uses Tor.",
     }

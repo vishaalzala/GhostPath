@@ -33,7 +33,7 @@ class ReleaseHardeningTests(unittest.TestCase):
         self.assertEqual(result["non_loopback_address_count"], 0)
 
     @patch("ghostpath.services.run_readonly")
-    def test_active_wrapper_selected_if_instance_inactive(self, call):
+    def test_active_exited_wrapper_is_not_a_running_tor_daemon(self, call):
         def fake(args):
             if args[0] == "tor":
                 return Result(True, 0, "Tor version", "")
@@ -43,7 +43,7 @@ class ReleaseHardeningTests(unittest.TestCase):
         call.side_effect = fake
         result = tor_status()
         self.assertEqual(result["selected_unit"], "tor.service")
-        self.assertTrue(result["service_active"])
+        self.assertFalse(result["service_active"])
         self.assertFalse(result["routing_verified"])
 
     def test_production_release_is_still_blocked(self):
