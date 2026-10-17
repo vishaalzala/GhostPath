@@ -1,3 +1,3 @@
-"""GhostPath v2 diagnostic tools. No network configuration changes."""
+"""GhostPath v2 local-first defensive cybersecurity tools."""
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0a2"
