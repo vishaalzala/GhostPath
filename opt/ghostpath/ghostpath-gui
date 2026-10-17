@@ -7,7 +7,7 @@
 
 ### BEGIN INIT INFO
 # Provides: ghostpath
-# Short-Description: Transparent Proxy through TOR, Privoxy, Polipo + MacChanger features, for a simple and better privacy and security.
+# Short-Description: Transparent Proxy through TOR, Privoxy, HTTP proxy + MacChanger features, for a simple and better privacy and security.
 ### END INIT INFO
 
 # Thanks to:
@@ -43,18 +43,18 @@ start_privoxy='echo "ghostpath start_privoxy" > /tmp/code_terminal'
 stop_privoxy='echo "ghostpath stop_privoxy" > /tmp/code_terminal'
 status_privoxy='echo "ghostpath status_privoxy" > /tmp/code_terminal'
 
-#polipo
-start_polipo='echo "ghostpath start_polipo" > /tmp/code_terminal'
-stop_polipo='echo "ghostpath stop_polipo" > /tmp/code_terminal'
-status_polipo='echo "ghostpath status_polipo" > /tmp/code_terminal'
+#HTTP proxy
+start_http_proxy='echo "ghostpath start_http_proxy" > /tmp/code_terminal'
+stop_http_proxy='echo "ghostpath stop_http_proxy" > /tmp/code_terminal'
+status_http_proxy='echo "ghostpath status_http_proxy" > /tmp/code_terminal'
 
 #i2p
 start_i2p='echo "ghostpath start_i2p" > /tmp/code_terminal'
 stop_i2p='echo "ghostpath stop_i2p" > /tmp/code_terminal'
 status_i2p='echo "ghostpath status_i2p" > /tmp/code_terminal'
 
-#arm
-start_arm='echo "ghostpath start_arm" > /tmp/code_terminal'
+#nyx
+start_nyx='echo "ghostpath start_nyx" > /tmp/code_terminal'
 
 #wipe
 wipe='echo "ghostpath wipe" > /tmp/code_terminal'
@@ -122,10 +122,10 @@ export MAIN_DIALOG='
 						<action>'$status_privoxy'</action>
 						<action type="refresh">terminale</action>
 					</button>
-					<button tooltip-text="Polipo Status">
+					<button tooltip-text="HTTP proxy Status">
 						<width>'$dim'</width>
-						<label> POLIPO </label>
-						<action>'$status_polipo'</action>
+						<label> HTTP PROXY </label>
+						<action>'$status_http_proxy'</action>
 						<action type="refresh">terminale</action>
 					</button>
 			</frame>
@@ -159,11 +159,11 @@ export MAIN_DIALOG='
 						<action type="refresh">terminale</action>
 					</button>
 				</frame>
-				<frame Arm>
+				<frame Nyx>
 					<button tooltip-text="Start Anonymizing Relay Monitor">
 						<width>'$dim'</width>
 						<label> MONITOR </label>
-						<action>'$start_arm'</action>
+						<action>'$start_nyx'</action>
 						<action type="refresh">terminale</action>
 					</button>
 				</frame>
@@ -212,17 +212,17 @@ export MAIN_DIALOG='
 						<action type="refresh">terminale</action>
 					</button>
 				</frame>
-				<frame Polipo>
-					<button tooltip-text="Manually Start Polipo">
+				<frame HTTP Proxy>
+					<button tooltip-text="Manually Start HTTP proxy">
 						<width>'$dim'</width>
 						<label> START </label>
-						<action>'$start_polipo'</action>
+						<action>'$start_http_proxy'</action>
 						<action type="refresh">terminale</action>
 					</button>
-					<button tooltip-text="Manually Stop Polipo">
+					<button tooltip-text="Manually Stop HTTP proxy">
 						<width>'$dim'</width>
 						<label> STOP </label>
-						<action>'$stop_polipo'</action>
+						<action>'$stop_http_proxy'</action>
 						<action type="refresh">terminale</action>
 					</button>
 				</frame>
