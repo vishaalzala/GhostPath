@@ -29,6 +29,8 @@ def tor_status() -> dict[str, object]:
         None,
     )
     if candidate is None:
+        candidate = next((u for u in valid if u["active"] == "active"), None)
+    if candidate is None:
         candidate = valid[0] if valid else None
     return {
         "installed_binary": run_readonly(["tor", "--version"]).available,
