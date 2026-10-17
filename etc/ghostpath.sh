@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # This code is based on anonsurf by #ParrotSec & AnonSecTunnel by cysec666 #AnonSec
-# implementing TOR, I2P, Privoxy, Polipo, arm-tor and MacChanger for a simple and better privacy and security.
+# implementing TOR, I2P, Privoxy, HTTP proxy, Nyx and MacChanger for a simple and better privacy and security.
 
 # Coded by Hiroshiman
 # Twitter: @HiroshimanRise
 
 ### BEGIN INIT INFO
 # Provides: ghostpath
-# Short-Description: Transparent Proxy through TOR, I2P, Privoxy, Polipo + arm-tor and MacChanger features
+# Short-Description: Transparent Proxy through TOR, I2P, Privoxy, HTTP proxy + Nyx and MacChanger features
 ### END INIT INFO
 
 # Thanks to:
@@ -106,13 +106,10 @@ function wipe {
 	notify "Cache, ram & swap-space cleaned!"
 }
 
-## ARM ####
-function start_arm {
-	echo -e "\n$GREEN*$BLUE Starting Anonymizing Relay Monitor (arm)..."$RESETCOLOR
-	xhost +
-	sleep 1
-	DISPLAY=:0.0 gnome-terminal -e "sudo arm"
-	sleep 1
+## NYX ####
+function start_nyx {
+    if ! command -v nyx >/dev/null 2>&1; then echo "Nyx missing: sudo apt install nyx" >&2; return 1; fi
+    nyx
 }
 
 ## PRIVOXY ####
@@ -146,36 +143,10 @@ function status_privoxy {
 	sleep 1
 }
 
-## POLIPO ####
-
-# START ####
-function start_polipo {
-	echo -e "\n$GREEN*$BLUE Starting Polipo Service...\n"$RESETCOLOR      
-	sleep 1
-	sudo service polipo start
-	echo -e "$GREEN*$BLUE Polipo Service$GREEN [ON]"$RESETCOLOR
-	sleep 1
-	notify "Polipo daemon ON" 
-}
-
-# STOP ####
-function stop_polipo {
-	echo -e "\n$GREEN*$BLUE Stopping Polipo Service...\n"$RESETCOLOR
-	sleep 1
-	sudo service polipo stop
-	sleep 1
-	echo -e "$GREEN*$BLUE Polipo Service$RED [OFF]"$RESETCOLOR
-	sleep 1
-	notify "Polipo daemon OFF"  
-}
-
-# STATUS ####
-function status_polipo {
-	echo -e "\n$GREEN*$BLUE Polipo Service Status:\n"$RESETCOLOR
-	sleep 1
-	sudo service polipo status
-	sleep 1
-}
+## HTTP PROXY (PRIVOXY) ####
+function start_http_proxy { systemctl start privoxy; }
+function stop_http_proxy { systemctl stop privoxy; }
+function status_http_proxy { systemctl status privoxy --no-pager; }
 
 ## MACCHANGER ####
 
@@ -478,14 +449,14 @@ case "$1" in
 	status_privoxy)
 		status_privoxy
 	;;	
-	start_polipo)
-		start_polipo
+	start_http_proxy)
+		start_http_proxy
 	;;
-	stop_polipo)
-		stop_polipo
+	stop_http_proxy)
+		stop_http_proxy
 	;;
-	status_polipo)
-		status_polipo
+	status_http_proxy)
+		status_http_proxy
 	;;
 	start_mac)
 		start_mac
@@ -496,8 +467,8 @@ case "$1" in
 	status_mac)
 		status_mac
 	;;
-	start_arm)
-		start_arm
+	start_nyx)
+		start_nyx
 	;;
 	wipe)
 		wipe
@@ -525,16 +496,16 @@ case "$1" in
 	$RED ghostpath start_privoxy$BLUE    =>$GREEN Start privoxy services
 	$RED ghostpath stop_privoxy$BLUE     =>$GREEN Stop privoxy services
 	$RED ghostpath status_privoxy$BLUE   =>$GREEN privoxy status\n
-	$BLUE----[ polipo related features ]----
-	$RED ghostpath start_polipo$BLUE     =>$GREEN Start polipo services
-	$RED ghostpath stop_polipo$BLUE      =>$GREEN Stop polipo services
-	$RED ghostpath status_polipo$BLUE    =>$GREEN Polipo status\n
+	$BLUE----[ HTTP proxy related features ]----
+	$RED ghostpath start_http_proxy$BLUE     =>$GREEN Start HTTP proxy services
+	$RED ghostpath stop_http_proxy$BLUE      =>$GREEN Stop HTTP proxy services
+	$RED ghostpath status_http_proxy$BLUE    =>$GREEN HTTP proxy status\n
 	$BLUE----[ macchanger related features ]----
 	$RED ghostpath start_mac$BLUE        =>$GREEN Start macchanger services
 	$RED ghostpath stop_mac$BLUE         =>$GREEN Stop macchanger services
 	$RED ghostpath status_mac$BLUE       =>$GREEN macchanger status\n
-	$BLUE----[ arm related features ]----
-	$RED ghostpath start_arm$BLUE        =>$GREEN Start Monitoring Anonymizing Relay (arm)\n
+	$BLUE----[ Nyx monitoring features ]----
+	$RED ghostpath start_nyx$BLUE        =>$GREEN Start Tor relay monitor (Nyx)\n
 	$BLUE----[ wipe related features ]----
 	$RED ghostpath wipe$BLUE             =>$GREEN cache, RAM & swap-space cleaner\n
 	$BLUE----[ hostname related features ]----
