@@ -86,6 +86,14 @@ these are not packet rates.
 `ghostpath defense capture --file example.pcap` reads metadata only.
 It never generates a flood or operates against public targets.
 
+For authorised Zeek JSON connection logs, run:
+
+```bash
+ghostpath defense zeek --file authorised-conn.log --json
+```
+
+This reads existing logs and excludes IP addresses from output. See [Zeek Log Guide](ZEEK_LOGS.md).
+
 ## 6 — Learning centre
 `ghostpath labs list` displays available offline lessons.
 `ghostpath labs run traffic-anomaly` demonstrates volume alerts.
