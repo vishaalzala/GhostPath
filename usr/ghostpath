@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# Compatibility entry point to installed GhostPath script.
-exec bash /usr/local/lib/ghostpath/ghostpath.sh "$@"

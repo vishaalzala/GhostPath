@@ -1,45 +1,45 @@
-# GhostPath v2 — Proposed Development Roadmap
+# GhostPath v2 Roadmap
 
-Status: **Planning only**. Nothing on this page is implemented by the documentation update.
+## First milestone
+- [x] Archive existing code and history in legacy-v1
+- [x] Create develop-v2 Python development branch
+- [x] Read-only Python CLI with JSON results
+- [x] Tor, Privoxy and NetworkManager diagnostics
+- [x] Current MAC inventory and cached connected-Wi-Fi summary
+- [x] Initial mock-based unit tests and CI configuration
+- [x] New user guide and security policy
 
-## Phase 0: Ownership and inventory (blocker)
-- Confirm upstream licence and redistribution permissions.
-- Audit package dependencies, distro support and permission requirements.
-- Record every file and networking configuration the legacy installer can mutate.
-- Establish disposable VM test images and baseline connectivity metrics.
+## Phase 1 — Remaining foundation work
+- [ ] CI results checked for supported Python versions
+- [ ] Kali/Debian disposable-VM smoke tests
+- [ ] Improve package-specific remediation and OS compatibility detection
+- [ ] Privacy-safe structured diagnostics and support bundles
+- [ ] Licensing/provenance review and release policy
 
-## Phase 1: Safe operations (critical)
-- Make dry-run default for installer, and require explicit confirmation for changes.
-- Snapshot and restore all affected DNS, firewall, Tor and service configurations.
-- Introduce safe interruption, rollback and idempotent uninstall.
-- Test recovery after failed installation, crash and reboot.
-- **Exit criteria:** baseline state restored and connectivity verified in repeatable VM tests.
+## Phase 2 — Tor and network safety
+- [ ] Tor SOCKS/control integration and independent health verification
+- [ ] Privoxy compatibility and safe configuration validation
+- [ ] DNS/IPv4/IPv6 diagnostic checks
+- [ ] Privilege separation with narrowly scoped helper
+- [ ] Network transaction journal, rollback and recovery testing
 
-## Phase 2: Modern networking (critical)
-- Integrate maintained Tor, nftables and systemd service APIs.
-- Respect NetworkManager and systemd-resolved and avoid conflicting ownership.
-- Implement opt-in, reversible kill-switch behaviour.
-- Detect IPv4, IPv6 and DNS routing discrepancies and explicitly document limits of WebRTC checks.
-- **Exit criteria:** leak and recovery tests pass in each supported VM platform.
+## Phase 3 — MAC and wireless posture
+- [ ] NetworkManager MAC privacy profiles with restore
+- [ ] WPA2/WPA3 and PMF security posture on authorized networks
+- [ ] Optional passive wireless monitor adapter
+- [ ] Offline capture review and educational lab analysis
 
-## Phase 3: New app (high)
-- Python 3 CLI with informative status, diagnostic and rollback commands.
-- PySide6 GUI without unnecessary root privileges; supported privileged helper.
-- Clear health indicators; privacy-preserving local logs and export.
-- **Exit criteria:** CLI and GUI show matching status; error paths recover cleanly.
+## Phase 4 — DDoS defence
+- [ ] Synthetic and authorized offline traffic datasets
+- [ ] Alert baselines and anomalous event analysis
+- [ ] Optional Suricata/Zeek import
+- [ ] Isolated training exercises and egress isolation tests
 
-## Phase 4: Optional integrations (medium)
-- Review I2P and Privoxy integrations; drop Polipo.
-- Optional MAC/hostname modification with explicit consent and reliable restoration.
-- Add isolated training scenarios on DNS, Tor and firewall fundamentals.
+## Phase 5 — GUI and release
+- [ ] PySide6 desktop interface
+- [ ] Local learning centre, reports, accessibility
+- [ ] Debian package, tested installer, updater, clean uninstall
+- [ ] Signed releases, SBOM, regression/security/rollback validation
 
-## Phase 5: Release readiness (critical)
-- CI with static analysis, shellcheck, Python tests, package manifest and dependency scan.
-- Supported distro matrix; manual restore and uninstall validation.
-- Versioned release notes and honest privacy-limitations documentation.
-- **Exit criteria:** a release is not labelled ready until rollback, leak checks and clean-uninstall tests succeed.
-
-## Not in scope
-- Claims of untraceability or guaranteed anonymity.
-- Access to third-party devices or networks without authorisation.
-- Silent persistence, evasion or unauthorised monitoring features.
+Stable release is blocked until errors, reboot recovery, firewall and DNS
+restoration, installation and upgrades pass documented tests.

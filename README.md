@@ -1,67 +1,67 @@
-# GhostPath
+# GhostPath v2 — Python Alpha
 
-**Linux Privacy & Network Security Toolkit**
+**Local-first Linux privacy and defensive cybersecurity diagnostics.**
 
-GhostPath is a Linux-based, education-focused project for studying Tor routing, proxy settings, network diagnostics, and privacy controls on devices and lab networks you own or have permission to manage.
+**Status: v2.0.0a1 / development only. NOT a production privacy or anonymity tool.**
 
-> **Development status:** This is a rebranded, untested legacy codebase. Changing names does not modernize its networking behaviour. **Do not run the installer on your everyday operating system.** Use a disposable VM and a snapshot. No anonymity guarantee is provided.
+This `develop-v2` branch contains a fresh Python 3 CLI with read-only
+diagnostics. It does not change DNS, routes, MAC addresses, Wi-Fi interfaces,
+firewalls or Tor configurations, and does not start or stop services.
 
-## What is included today
+Legacy Bash scripts and their history remain in `legacy-v1`. The `main`
+branch remains unchanged until v2 passes release gates.
 
-- `ghostpath` — main command-line entry point
-- `ghostpath-on` / `ghostpath-off` — historical convenience scripts
-- `ghostpath-gui` — older GTKdialog launcher
-- Tor, Privoxy, and Polipo example configurations
-- Scripts interacting with firewall rules, DNS settings, network identity, and services
+## Test in Kali Linux or Debian
 
-**Not yet implemented or validated:** current Kali compatibility, nftables migration, modern GUI, reliable rollback, kill switch, CI tests, or production release.
+Use a normal user account and a disposable test environment.
 
-## Repository layout
-
-```text
-GhostPath/
-├── README.md
-├── ROADMAP.md
-├── INSTALL.sh
-├── ghostpath.desktop
-├── ghostpath.png
-├── etc/ghostpath.sh
-├── usr/ghostpath
-├── usr/ghostpath-on
-├── usr/ghostpath-off
-├── opt/ghostpath/ghostpath-gui
-├── tor/torrc
-├── polipo/config
-└── privoxy/config
+```bash
+git clone https://github.com/vishaalzala/GhostPath.git
+cd GhostPath
+git switch develop-v2
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --no-deps -e .
+ghostpath doctor --json
 ```
 
-## Getting started safely
+If venv support is missing, install the system's python3-venv package using
+the OS package manager. Do not run `sudo pip install`.
 
-1. Clone the repository into a dedicated, isolated Linux VM.
-2. Read `INSTALL.sh` and all scripts before running them.
-3. Make a VM snapshot, especially before any change to DNS or firewall rules.
-4. Consider the bundled installation process *historical and unsupported* until its rollback and distro checks have been tested.
+## Available alpha commands
 
-There is no recommended production installation command at this stage.
+```bash
+ghostpath --version
+ghostpath doctor
+ghostpath doctor --json
+ghostpath status --json
+ghostpath tor status --json
+ghostpath proxy status --json
+ghostpath mac status --json
+ghostpath wifi status --json
+```
 
-## Roadmap
+Tor, Privoxy, Nyx and NetworkManager are optional for this diagnostic alpha.
+Missing packages are reported rather than automatically installed.
 
-See [ROADMAP.md](ROADMAP.md) for the modernization checklist.
+## Not implemented
 
-## Responsible use
+No Tor traffic routing, firewall modifications, DNS changes, MAC spoofing,
+active Wi-Fi intrusion, DDoS traffic generation, graphical interface, or
+anonymity guarantees. Do not use scripts from the old branch.
 
-Run network experiments only on systems and networks you control or for which you have explicit authorization. Tor is not a promise of complete anonymity. Never rely on this unreleased tool to protect sensitive activity.
+## Run tests
 
-## Credits and licensing
+```bash
+python -m unittest discover -s tests -v
+```
 
-Original script comments attribute work to **HiroshimanRise**, **ParrotSec**, **cysec666**, and other contributors. Contributor attribution is retained in source files. The source archive did not include a clearly identified license; redistribution rights should be confirmed before a public release.
+See [User Guide](docs/USER_GUIDE.md), [Architecture](docs/ARCHITECTURE.md),
+[Security](SECURITY.md) and [Roadmap](ROADMAP.md).
 
+## Provenance
 
-## Kali dependency update (October 2026)
-
-- **Nyx** replaces the outdated Tor ARM monitoring package (`ghostpath start_nyx`).
-- **Privoxy** provides the HTTP proxy service (`ghostpath start_http_proxy`, `stop_http_proxy`, `status_http_proxy`).
-- The installer checks APT failures and places example configuration files under `/usr/local/share/ghostpath/examples/`, rather than overwriting system Tor/Privoxy configuration.
-- The old firewall/DNS routing engine remains unverified. Installing dependencies is **not** proof that transparent routing works or restores networking correctly.
-
-On a disposable VM only, inspect the installer then use `sudo ./INSTALL.sh`. Do not use this build for sensitive browsing.
+The legacy scripts have third-party authorship and do not have a verified
+redistribution license. Their attribution/history remain in `legacy-v1`.
+The Python modules are newly written and do not copy those shell scripts.
+License review is required before public stable distribution.
