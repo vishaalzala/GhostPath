@@ -37,3 +37,12 @@ Optional authenticated Tor Control Protocol, NetworkManager D-Bus MAC
 privacy with transaction rollback, vetted native packages, hardened
 upgrades/uninstaller and tested nftables policy changes remain outside
 this read-only release. See roadmap and go-live gates.
+
+## Additional bounded offline adapters
+
+- config_audit.py: supplied owned-router JSON only; no device connections.
+- eve.py: local Suricata JSONL categories and severity counts only.
+- lessons.py: deterministic offline education.
+- html_reports.py: private, escaped HTML reports with exclusive creation.
+
+All additions remain unprivileged and do not perform remote network calls.

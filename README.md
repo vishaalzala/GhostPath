@@ -113,3 +113,22 @@ Consult [Roadmap](ROADMAP.md), [Release Checklist](docs/RELEASE_CHECKLIST.md),
 Third-party legacy provenance remains under review. GhostPath v2 clean-room
 Python modules are developed independently, but the repository has not yet
 completed the rights review required for a public stable release.
+
+## Additional offline integrations (2.0.0a2)
+
+The integration build also supports router-configuration hardening checks,
+Suricata alert summaries, offline lessons and HTML reports. These do not
+connect to or disrupt any network.
+
+    .venv/bin/ghostpath wifi config --file examples/router.json --json
+    .venv/bin/ghostpath defense eve --file examples/eve.jsonl --json
+    .venv/bin/ghostpath learn list --json
+    .venv/bin/ghostpath learn show wifi --json
+    .venv/bin/ghostpath report html --output findings.html
+
+Example inputs are in the examples/ directory. The optional desktop
+interface has local-file importer tabs for owned-router JSON and EVE logs,
+plus an HTML export screen. HTML outputs can be printed to PDF.
+
+Release remains an **alpha** pending real Kali/GUI/hardware and licensing
+verification; see docs/RELEASE_CHECKLIST.md.

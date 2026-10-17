@@ -14,3 +14,11 @@
 ## 2.0.0a1 — Development alpha
 - New Python packaging, core diagnostics, CLI and initial CI tests.
 - Legacy scripts preserved separately on the legacy-v1 branch.
+
+## Integrated offline assessment additions (2026-10-17)
+
+- Added owned-router JSON security configuration review.
+- Added Suricata EVE JSONL severity and category aggregation.
+- Added guided offline education lessons and escaped HTML reports.
+- Added sample safe data, GUI file import, and corresponding tests.
+- Corrected an outdated CLI test; no network-changing capability enabled.

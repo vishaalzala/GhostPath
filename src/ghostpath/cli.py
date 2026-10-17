@@ -9,6 +9,10 @@ from typing import Any
 
 from . import __version__
 from .captures import inspect_pcap
+from .config_audit import audit_file as audit_router_file
+from .eve import summarize_eve
+from .html_reports import save_html_report
+from .lessons import list_lessons, read_lesson
 from .defense import analyze, example_events, parse_csv
 from .diagnostics import doctor, status
 from .labs import list_labs, run_lab
@@ -69,6 +73,9 @@ def make_parser() -> argparse.ArgumentParser:
     sub = wifi.add_subparsers(dest="action", required=True)
     for name in ("status", "audit"):
         _json_option(sub.add_parser(name))
+    config = sub.add_parser("config", help="Offline owned-router JSON hardening review")
+    config.add_argument("--file", required=True, type=Path)
+    _json_option(config)
     capture = sub.add_parser("capture", help="Analyse an offline, authorised classic PCAP")
     capture.add_argument("--file", required=True, type=Path)
     _json_option(capture)
@@ -81,6 +88,9 @@ def make_parser() -> argparse.ArgumentParser:
     csv_parser = sub.add_parser("analyze", help="Analyze local, bounded CSV event counts")
     csv_parser.add_argument("--file", required=True, type=Path)
     _json_option(csv_parser)
+    eve = sub.add_parser("eve", help="Summarise a local Suricata alert JSONL log")
+    eve.add_argument("--file", required=True, type=Path)
+    _json_option(eve)
     capture = sub.add_parser("capture", help="Inspect metadata of a local classic PCAP")
     capture.add_argument("--file", required=True, type=Path)
     _json_option(capture)
@@ -93,11 +103,21 @@ def make_parser() -> argparse.ArgumentParser:
     lab.add_argument("name", choices=["traffic-baseline", "traffic-anomaly", "wifi-hardening", "mac-privacy"])
     _json_option(lab)
 
+    learn = commands.add_parser("learn", help="Read offline security lessons")
+    learn_sub = learn.add_subparsers(dest="action", required=True)
+    _json_option(learn_sub.add_parser("list"))
+    show = learn_sub.add_parser("show")
+    show.add_argument("slug", choices=["tor", "mac", "wifi", "ddos", "report"])
+    _json_option(show)
+
     reports = commands.add_parser("report", help="Create a private local JSON assessment")
     report_sub = reports.add_subparsers(dest="action", required=True)
     create = report_sub.add_parser("create")
     create.add_argument("--output", required=True, type=Path)
     _json_option(create)
+    html_report = report_sub.add_parser("html", help="Create a private escaped HTML assessment")
+    html_report.add_argument("--output", required=True, type=Path)
+    _json_option(html_report)
 
     commands.add_parser("gui", help="Launch optional PySide6 desktop interface")
     return parser
@@ -134,6 +154,8 @@ def main(argv: list[str] | None = None) -> int:
                 result = connected_wifi()
             elif args.action == "audit":
                 result = wifi_audit()
+            elif args.action == "config":
+                result = audit_router_file(args.file)
             else:
                 result = inspect_pcap(args.file)
         elif args.command == "defense":
@@ -143,12 +165,16 @@ def main(argv: list[str] | None = None) -> int:
                 result = analyze(parse_csv(args.file))
             elif args.action == "capture":
                 result = inspect_pcap(args.file)
+            elif args.action == "eve":
+                result = summarize_eve(args.file)
             else:
                 result = counters()
         elif args.command == "labs":
             result = list_labs() if args.action == "list" else run_lab(args.name)
+        elif args.command == "learn":
+            result = list_lessons() if args.action == "list" else read_lesson(args.slug)
         elif args.command == "report":
-            result = save_report(build_report(), args.output)
+            result = save_html_report(build_report(), args.output) if args.action == "html" else save_report(build_report(), args.output)
         else:
             parser.error("Unknown command")
             return 2

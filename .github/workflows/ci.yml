@@ -44,6 +44,10 @@ jobs:
           ghostpath defense demo --scenario surge --json
           ghostpath labs list --json
           ghostpath release-check --json
+          ghostpath wifi config --file examples/router.json --json
+          ghostpath defense eve --file examples/eve.jsonl --json
+          ghostpath learn list --json
+          ghostpath report html --output /tmp/ghostpath-ci-report.html --json
       - name: Upload test build artifact
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
