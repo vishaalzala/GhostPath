@@ -1,6 +1,6 @@
 # GhostPath v2 — Python Security Toolkit
 
-**Current development version: 2.0.0a4 (alpha).**
+**Current development version: 2.0.0a5 (alpha).**
 Privacy diagnostics, defensive Wi-Fi assessments and offline DDoS education.
 **This is NOT a production anonymity tool, live Wi-Fi attack suite, or DDoS generator.**
 
@@ -20,8 +20,8 @@ Running Tor is not evidence that applications use Tor.
 | Offline PCAP | Strict-size classic PCAP metadata parsing; no packet payload export |
 | DDoS Defence | Cumulative local counters, bounded CSV anomaly analysis, synthetic scenarios |
 | Learning | Four offline guided lab exercises |
-| Reports | Explicitly requested new local JSON reports with private file permissions |
-| Desktop | Optional PySide6 multi-tab read-only dashboard |
+| Reports | Private JSON and professional HTML reports, evidence-source labels and redaction |
+| Desktop | PySide6 dashboard with summary cards, findings and collapsible technical JSON |
 | Quality | Automated Python tests, CI, security policy and release criteria |
 
 Not implemented: system-wide Tor routing, verified leak protection, active MAC
@@ -178,3 +178,33 @@ signed stable production packages.
 
 The optional desktop GUI now also supports authorised offline Zeek JSON
 connection logs under the Zeek JSON tab. All imports are local and bounded.
+
+
+## Redesigned GhostPath interface and HTML reports (v2.0.0a5)
+
+The desktop dashboard now opens with **readable cards** instead of raw
+developer JSON. Each module shows an evidence-source label:
+
+- **Live local diagnostic:** read-only device or service information.
+- **Offline imported evidence:** user-provided router JSON, Suricata EVE
+  or Zeek connection logs (not a live network scan).
+- **Educational simulation:** fictional or synthetic lab data.
+
+Select **Show technical details** to reveal the original JSON result.
+The GUI retains existing modules and their read-only behaviour.
+
+The professional HTML report includes an executive summary, explicit
+evidence sections, practical context, print styling and redacted technical
+data. Export uses private 0600 permissions, never overwrites a prior file,
+and loads no remote assets. Educational sample findings are not
+presented as real vulnerabilities in the user's network.
+
+Update an existing Kali user installation from its folder:
+
+    git pull origin develop-v2
+    bash scripts/update-user.sh --gui
+    ~/.local/bin/ghostpath-v2 gui
+
+Close any existing GhostPath windows before upgrading and run as an
+ordinary user. No Tor routing, MAC modification, DNS or firewall
+changes have been added. This remains an alpha.

@@ -1,7 +1,7 @@
 # GhostPath v2 — Go-live gates and test evidence
 
 ## Current verdict: NO-GO for stable/production distribution
-The Python 2.0.0a4 build is a development alpha with isolated diagnostics
+The Python 2.0.0a5 build is a development alpha with isolated diagnostics
 and offline educational features. A green GitHub Actions run alone is not
 proof of privacy protection, installation portability or correct recovery.
 
@@ -60,3 +60,16 @@ See docs/SUPPLY_CHAIN.md for the source and wheel provenance workflow and
 docs/KALI_ACCEPTANCE.md for test instructions. Automated environment tests
 cannot stand in for real wireless hardware, reboot and desktop evaluation.
 No stable GitHub release is authorised solely from these CI checks.
+
+
+## 2.0.0a5 design acceptance
+
+- [ ] CI across Python 3.11–3.13 confirms CLI compatibility.
+- [ ] Headless Qt confirms tabs, evidence label and details toggles.
+- [ ] Report tests confirm provenance, escaped HTML, private file mode,
+      no overwrite and redaction of known sensitive keys.
+- [ ] Manual Kali GUI visual/accessibility test on actual desktop.
+- [ ] Manual HTML/PDF-print visual check in local browser.
+- [ ] Independent security, licensing and packaging review.
+
+Passing automated checks alone cannot approve stable go-live.

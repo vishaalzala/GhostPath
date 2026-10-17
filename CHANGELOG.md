@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0a5 — Dashboard and reporting redesign
+- Redesigned PySide6 GUI with metric cards, findings, context and evidence labels.
+- Made technical JSON opt-in per panel while keeping existing workflows.
+- Rebuilt HTML reports with executive summary, explicit evidence sections, printable styling and redacted technical details.
+- Kept local reports private and non-overwriting; added regression tests and headless GUI checks.
+- No active network or anonymity capabilities added; stable release remains blocked.
+
+
 ## 2.0.0a4 — Verification and handoff alpha (2026-10-17)
 - Added supply-chain verification workflow for development wheels, source,
   CycloneDX runtime inventory, SHA-256 checksums and GitHub attestations.

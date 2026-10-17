@@ -1,7 +1,7 @@
 # GhostPath v2 — User Guide
 
 ## Scope
-This guide covers the Python `develop-v2` branch (2.0.0a3).
+This guide covers the Python `develop-v2` branch (2.0.0a5).
 All privacy features are read-only diagnostics, and all DDoS learning is
 offline. GhostPath does not guarantee anonymity or prevent attacks.
 
@@ -211,3 +211,33 @@ explains development wheel/SDist, SBOM, SHA-256 and attestation outputs.
 
 In the optional GUI, the Zeek JSON tab can import a locally supplied,
 authorised Zeek connection log. No packets are captured or generated.
+
+
+## 13 — Dashboard redesign and professional reports (2.0.0a5)
+
+The GUI shows metric cards for service status, DNS, MAC profiles,
+connected Wi-Fi data and synthetic defence exercises. Use **Refresh**
+to update a panel. Select **Show technical details** for its JSON.
+A proxy running never means system-wide privacy is verified.
+
+Labels distinguish **Live local diagnostic**, **Offline imported evidence**
+and **Educational simulation** sources.
+
+The **Reports → Export HTML report** action saves a private, printable
+assessment document. After opening an authorised router, Suricata or
+Zeek file in the same GUI session, the report includes a redacted summary
+of the most recent imported result; it does not include packet payloads.
+Sample findings remain visibly labelled as educational examples.
+
+The resulting file has private permissions, cannot overwrite an existing
+file, and has no active script or external content. Review it before sharing.
+
+### Update a working Kali installation
+
+    cd ~/Desktop/GhostPath-v2
+    git pull origin develop-v2
+    bash scripts/update-user.sh --gui
+    ~/.local/bin/ghostpath-v2 --version
+    ~/.local/bin/ghostpath-v2 gui
+
+Close old windows first. Use the regular Kali account, not root.
