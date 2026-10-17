@@ -55,3 +55,13 @@ Run network experiments only on systems and networks you control or for which yo
 ## Credits and licensing
 
 Original script comments attribute work to **HiroshimanRise**, **ParrotSec**, **cysec666**, and other contributors. Contributor attribution is retained in source files. The source archive did not include a clearly identified license; redistribution rights should be confirmed before a public release.
+
+
+## Kali dependency update (October 2026)
+
+- **Nyx** replaces the outdated Tor ARM monitoring package (`ghostpath start_nyx`).
+- **Privoxy** provides the HTTP proxy service (`ghostpath start_http_proxy`, `stop_http_proxy`, `status_http_proxy`).
+- The installer checks APT failures and places example configuration files under `/usr/local/share/ghostpath/examples/`, rather than overwriting system Tor/Privoxy configuration.
+- The old firewall/DNS routing engine remains unverified. Installing dependencies is **not** proof that transparent routing works or restores networking correctly.
+
+On a disposable VM only, inspect the installer then use `sudo ./INSTALL.sh`. Do not use this build for sensitive browsing.
