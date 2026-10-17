@@ -9,7 +9,7 @@
 	sleep 25
 	ghostpath stop_privoxy
 	sleep 2
-	ghostpath stop_polipo
+	ghostpath stop_http_proxy
 	sleep 2
 	ghostpath stop_mac
 	sleep 3
@@ -84,16 +84,16 @@
 	$RED ghostpath start_privoxy$BLUE    =>$GREEN Start privoxy services
 	$RED ghostpath stop_privoxy$BLUE     =>$GREEN Stop privoxy services
 	$RED ghostpath status_privoxy$BLUE   =>$GREEN privoxy status\n
-	$BLUE----[ polipo related features ]----
-	$RED ghostpath start_polipo$BLUE     =>$GREEN Start polipo services
-	$RED ghostpath stop_polipo$BLUE      =>$GREEN Stop polipo services
-	$RED ghostpath status_polipo$BLUE    =>$GREEN Polipo status\n
+	$BLUE----[ HTTP proxy related features ]----
+	$RED ghostpath start_http_proxy$BLUE     =>$GREEN Start HTTP proxy services
+	$RED ghostpath stop_http_proxy$BLUE      =>$GREEN Stop HTTP proxy services
+	$RED ghostpath status_http_proxy$BLUE    =>$GREEN HTTP proxy status\n
 	$BLUE----[ macchanger related features ]----
 	$RED ghostpath start_mac$BLUE        =>$GREEN Start macchanger services
 	$RED ghostpath stop_mac$BLUE         =>$GREEN Stop macchanger services
 	$RED ghostpath status_mac$BLUE       =>$GREEN macchanger status\n
-	$BLUE----[ arm related features ]----
-	$RED ghostpath start_arm$BLUE        =>$GREEN Start Monitoring Anonymizing Relay (arm)\n
+	$BLUE----[ Nyx monitoring features ]----
+	$RED ghostpath start_nyx$BLUE        =>$GREEN Start Tor relay monitor (Nyx)\n
 	$BLUE----[ wipe related features ]----
 	$RED ghostpath wipe$BLUE             =>$GREEN cache, RAM & swap-space cleaner\n
 	$BLUE----[ hostname related features ]----
