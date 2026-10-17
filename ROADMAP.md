@@ -1,37 +1,45 @@
-# GhostPath v2 Roadmap
+# GhostPath v2 — Proposed Development Roadmap
 
-This document is a **plan**, not a list of completed features.
+Status: **Planning only**. Nothing on this page is implemented by the documentation update.
 
-## Phase 1 — Safety foundation (highest priority)
-- [ ] Review legacy installer, network mutations, dependencies and permissions.
-- [ ] Implement backup, state capture, rollback, and safe uninstall.
-- [ ] Add idempotent operations and validate configuration before activation.
-- [ ] Remove obsolete dependencies and unsafe privacy claims.
+## Phase 0: Ownership and inventory (blocker)
+- Confirm upstream licence and redistribution permissions.
+- Audit package dependencies, distro support and permission requirements.
+- Record every file and networking configuration the legacy installer can mutate.
+- Establish disposable VM test images and baseline connectivity metrics.
 
-## Phase 2 — Network engine
-- [ ] Add maintained Tor service integration and readiness checks.
-- [ ] Implement nftables compatibility checks and safe firewall transaction handling.
-- [ ] Integrate safely with NetworkManager and systemd-resolved.
-- [ ] Provide DNS/IPv4/IPv6 leak tests and independent connectivity verification.
-- [ ] Test fail-closed behaviour, emergency stop, and recovery after reboot.
+## Phase 1: Safe operations (critical)
+- Make dry-run default for installer, and require explicit confirmation for changes.
+- Snapshot and restore all affected DNS, firewall, Tor and service configurations.
+- Introduce safe interruption, rollback and idempotent uninstall.
+- Test recovery after failed installation, crash and reboot.
+- **Exit criteria:** baseline state restored and connectivity verified in repeatable VM tests.
 
-## Phase 3 — User experience
-- [ ] Build an accessible Python CLI.
-- [ ] Add a non-root GUI with a limited privileged helper.
-- [ ] Provide clear network state, logs and actionable errors.
+## Phase 2: Modern networking (critical)
+- Integrate maintained Tor, nftables and systemd service APIs.
+- Respect NetworkManager and systemd-resolved and avoid conflicting ownership.
+- Implement opt-in, reversible kill-switch behaviour.
+- Detect IPv4, IPv6 and DNS routing discrepancies and explicitly document limits of WebRTC checks.
+- **Exit criteria:** leak and recovery tests pass in each supported VM platform.
 
-## Phase 4 — Educational privacy tools
-- [ ] Optional I2P support.
-- [ ] Network diagnostics restricted to owned or authorized environments.
-- [ ] Optional MAC randomization with dependable restore.
-- [ ] Safe learning guides and redactable diagnostic exports.
+## Phase 3: New app (high)
+- Python 3 CLI with informative status, diagnostic and rollback commands.
+- PySide6 GUI without unnecessary root privileges; supported privileged helper.
+- Clear health indicators; privacy-preserving local logs and export.
+- **Exit criteria:** CLI and GUI show matching status; error paths recover cleanly.
 
-## Phase 5 — Quality and release
-- [ ] Add unit and integration tests.
-- [ ] Test in disposable supported Kali/Debian/Parrot VMs.
-- [ ] Add CI static analysis, dependency checks and software bill of materials.
-- [ ] Release versioned packages with documented installation and uninstall.
-- [ ] Publish tested compatibility matrix and release notes.
+## Phase 4: Optional integrations (medium)
+- Review I2P and Privoxy integrations; drop Polipo.
+- Optional MAC/hostname modification with explicit consent and reliable restoration.
+- Add isolated training scenarios on DNS, Tor and firewall fundamentals.
 
-## Release gate
-Do not call GhostPath v2 stable until configuration restoration, DNS protection, firewall rollback, reboot handling, and uninstall have passed regression testing.
+## Phase 5: Release readiness (critical)
+- CI with static analysis, shellcheck, Python tests, package manifest and dependency scan.
+- Supported distro matrix; manual restore and uninstall validation.
+- Versioned release notes and honest privacy-limitations documentation.
+- **Exit criteria:** a release is not labelled ready until rollback, leak checks and clean-uninstall tests succeed.
+
+## Not in scope
+- Claims of untraceability or guaranteed anonymity.
+- Access to third-party devices or networks without authorisation.
+- Silent persistence, evasion or unauthorised monitoring features.

@@ -2,37 +2,56 @@
 
 **Linux Privacy & Network Security Toolkit**
 
-GhostPath is an educational Linux privacy and network-security project for learning Tor routing, network diagnostics and safe configuration management on owned or authorized systems.
+GhostPath is a Linux-based, education-focused project for studying Tor routing, proxy settings, network diagnostics, and privacy controls on devices and lab networks you own or have permission to manage.
 
-> **Status:** Rebranded legacy scripts. The original networking logic has not been modernized, verified or made production-ready. Do not run the installer on a daily-use machine; use an isolated VM and snapshot.
+> **Development status:** This is a rebranded, untested legacy codebase. Changing names does not modernize its networking behaviour. **Do not run the installer on your everyday operating system.** Use a disposable VM and a snapshot. No anonymity guarantee is provided.
 
-## Available source components
+## What is included today
 
-- `ghostpath` main command-line program
-- `ghostpath-on` and `ghostpath-off` helper scripts
-- `ghostpath-gui` legacy GTKdialog interface
-- Tor, Privoxy and Polipo legacy configurations
-- Network configuration, firewall and DNS management scripts
+- `ghostpath` — main command-line entry point
+- `ghostpath-on` / `ghostpath-off` — historical convenience scripts
+- `ghostpath-gui` — older GTKdialog launcher
+- Tor, Privoxy, and Polipo example configurations
+- Scripts interacting with firewall rules, DNS settings, network identity, and services
 
-These filenames correspond to the newly prepared source ZIP. **The ZIP and its source files are not yet present in this GitHub repository.** Download the prepared archive from the project delivery and review locally before use.
+**Not yet implemented or validated:** current Kali compatibility, nftables migration, modern GUI, reliable rollback, kill switch, CI tests, or production release.
 
-## Getting started
+## Repository layout
 
-1. Use a disposable Kali or Debian VM for evaluation.
-2. Inspect `INSTALL.sh` and all scripts before running them.
-3. Create a snapshot before testing any scripts that change firewall or DNS settings.
-4. Treat installation, automatic restoration and distribution compatibility as unverified.
+```text
+GhostPath/
+├── README.md
+├── ROADMAP.md
+├── INSTALL.sh
+├── ghostpath.desktop
+├── ghostpath.png
+├── etc/ghostpath.sh
+├── usr/ghostpath
+├── usr/ghostpath-on
+├── usr/ghostpath-off
+├── opt/ghostpath/ghostpath-gui
+├── tor/torrc
+├── polipo/config
+└── privoxy/config
+```
 
-There is no supported production installation procedure yet.
+## Getting started safely
+
+1. Clone the repository into a dedicated, isolated Linux VM.
+2. Read `INSTALL.sh` and all scripts before running them.
+3. Make a VM snapshot, especially before any change to DNS or firewall rules.
+4. Consider the bundled installation process *historical and unsupported* until its rollback and distro checks have been tested.
+
+There is no recommended production installation command at this stage.
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for planned secure rollback, nftables, modern Tor integration, leak checks, GUI, packaging and automated tests.
+See [ROADMAP.md](ROADMAP.md) for the modernization checklist.
 
 ## Responsible use
 
-For ethical research and systems or networks you own or are authorized to administer. Tor does not guarantee anonymity.
+Run network experiments only on systems and networks you control or for which you have explicit authorization. Tor is not a promise of complete anonymity. Never rely on this unreleased tool to protect sensitive activity.
 
-## Attribution and licensing
+## Credits and licensing
 
-Original script contributors are acknowledged in source comments. The supplied archive did not contain a clearly identified license; confirm permissions before publishing derivative code publicly.
+Original script comments attribute work to **HiroshimanRise**, **ParrotSec**, **cysec666**, and other contributors. Contributor attribution is retained in source files. The source archive did not include a clearly identified license; redistribution rights should be confirmed before a public release.
