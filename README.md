@@ -1,6 +1,6 @@
 # GhostPath v2 — Python Security Toolkit
 
-**Current development version: 2.0.0a2 (alpha).**
+**Current development version: 2.0.0a3 (alpha).**
 Privacy diagnostics, defensive Wi-Fi assessments and offline DDoS education.
 **This is NOT a production anonymity tool, live Wi-Fi attack suite, or DDoS generator.**
 
@@ -135,3 +135,22 @@ Release remains an **alpha** pending real Kali/GUI/hardware and licensing
 verification; see docs/RELEASE_CHECKLIST.md.
 
 For authorised offline Zeek connection JSON logs, see [Zeek Log Guide](docs/ZEEK_LOGS.md).
+
+## User-scoped installer, updates and removal
+
+The v2 alpha can be installed separately from the legacy project **without sudo**:
+
+```bash
+bash scripts/install-user.sh
+~/.local/bin/ghostpath-v2 doctor
+# After pulling updates:
+bash scripts/update-user.sh
+# To remove the user-scoped installation:
+bash scripts/uninstall-user.sh
+```
+
+For the optional Qt UI, use `--gui` when installing/updating. Details and
+safety restrictions are in [Installation and Maintenance](docs/INSTALLATION.md).
+
+Passive IPv6 interface state is now included in the privacy diagnostics,
+but **no IPv6 leak test or network protection** is claimed.

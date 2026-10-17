@@ -56,6 +56,35 @@ def tor_socks_status(timeout: float = 0.5) -> dict[str, object]:
     return result
 
 
+
+def ipv6_inventory(
+    disabled_path: Path = Path("/proc/sys/net/ipv6/conf/all/disable_ipv6"),
+    interfaces_path: Path = Path("/proc/net/if_inet6"),
+) -> dict[str, object]:
+    """Read kernel IPv6 state; never modify interfaces or expose addresses."""
+    enabled: bool | None = None
+    try:
+        flag = disabled_path.read_text(encoding="utf-8").strip()
+        if flag in ("0", "1"):
+            enabled = flag == "0"
+    except OSError:
+        pass
+    count = 0
+    try:
+        for line in interfaces_path.read_text(encoding="utf-8").splitlines():
+            fields = line.split()
+            if len(fields) >= 6 and fields[-1] != "lo":
+                count += 1
+    except OSError:
+        pass
+    return {
+        "enabled": enabled,
+        "non_loopback_address_count": count,
+        "leak_tested": False,
+        "warning": "An IPv6 address count is not evidence of any leak or protection.",
+    }
+
+
 def privacy_report() -> dict[str, object]:
     return {
         "tor": tor_status(),
@@ -63,6 +92,7 @@ def privacy_report() -> dict[str, object]:
         "proxy": proxy_status(),
         "dns": dns_status(),
         "ipv4_leak_tested": False,
+        "ipv6": ipv6_inventory(),
         "ipv6_leak_tested": False,
         "webrtc_leak_tested": False,
         "system_protected": False,
