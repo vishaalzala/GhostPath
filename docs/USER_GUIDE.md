@@ -1,7 +1,7 @@
 # GhostPath v2 — User Guide
 
 ## Scope
-This guide covers the Python `develop-v2` branch (2.0.0a2).
+This guide covers the Python `develop-v2` branch (2.0.0a3).
 All privacy features are read-only diagnostics, and all DDoS learning is
 offline. GhostPath does not guarantee anonymity or prevent attacks.
 
@@ -179,3 +179,18 @@ review any report before distributing it.
 
 These additional modules do not enable Tor routing, system-wide privacy,
 MAC modification or active Wi-Fi/DDoS operations.
+
+## User-scoped installation and lifecycle (v2 alpha)
+
+For a separate v2 command without replacing existing legacy binaries:
+
+```bash
+bash scripts/install-user.sh
+~/.local/bin/ghostpath-v2 doctor
+bash scripts/update-user.sh
+bash scripts/uninstall-user.sh
+```
+
+The optional desktop interface uses `bash scripts/install-user.sh --gui`.
+See [Installation and Maintenance](INSTALLATION.md). The installer never
+rewrites DNS, firewall or Tor settings, and it refuses root privileges.

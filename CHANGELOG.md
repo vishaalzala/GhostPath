@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0a3 — Release hardening alpha (2026-10-17)
+- Added non-root per-user install/update/uninstall scripts, stable launcher and rollback checks.
+- Added headless Qt GUI CI smoke test and user-install lifecycle CI workflow.
+- Added passive IPv6 status reporting and improved Tor service-unit selection.
+- Expanded tests and installation documentation.
+- The project is still an alpha, with no verified anonymous routing or network changes.
+
 ## 2.0.0a2 — Development alpha (2026-10-17)
 - Added local privacy reporting and loopback SOCKS5 handshake check.
 - Added MAC privacy profiles (preview-only) and cached Wi-Fi posture checks.

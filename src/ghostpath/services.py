@@ -22,8 +22,10 @@ def _unit_status(unit: str) -> dict[str, str]:
 def tor_status() -> dict[str, object]:
     units = [_unit_status("tor@default.service"), _unit_status("tor.service")]
     valid = [u for u in units if u["load"] == "loaded"]
-    # tor.service may be only a wrapper; a loaded, active instance is preferred.
-    candidate = valid[0] if valid else None
+    # Prefer an active instance over inactive units; a wrapper may not carry Tor traffic.
+    candidate = next((u for u in valid if u["active"] == "active"), None)
+    if candidate is None:
+        candidate = valid[0] if valid else None
     return {
         "installed_binary": run_readonly(["tor", "--version"]).available,
         "units": units,

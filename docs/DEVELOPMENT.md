@@ -24,5 +24,12 @@ change network settings or start services.
 
 ## Testing
 - GitHub Actions runs unit tests on Python 3.11 through 3.13.
-- Kali/Debian VM smoke tests and GUI tests are still pending.
+- Kali/Debian container smoke tests run in CI; real VMs and GUI hardware need separate QA.
 - The alpha does not assert Tor routing, leak prevention or anonymity.
+
+## User package smoke tests
+
+GitHub CI validates the regular-user installation workflow in an isolated
+home directory (install, CLI, upgrade, uninstall), plus an optional headless
+Qt interface startup test. These checks do not replace a real Kali desktop
+usability or hardware test.

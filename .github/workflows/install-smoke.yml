@@ -1,0 +1,37 @@
+name: GhostPath User Installer Smoke
+
+on:
+  push:
+    branches: [develop-v2]
+  pull_request:
+    branches: [develop-v2, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  user-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install, update and remove with isolated user home
+        run: |
+          set -euo pipefail
+          export HOME="$(mktemp -d)"
+          trap 'rm -rf -- "$HOME"' EXIT
+          bash scripts/install-user.sh
+          "$HOME/.local/bin/ghostpath-v2" --version
+          "$HOME/.local/bin/ghostpath-v2" doctor --json
+          test -L "$HOME/.local/bin/ghostpath-v2"
+          test -d "$HOME/.local/share/ghostpath-v2"
+          bash scripts/update-user.sh
+          "$HOME/.local/bin/ghostpath-v2" defense demo --scenario normal --json
+          bash scripts/uninstall-user.sh
+          test ! -e "$HOME/.local/bin/ghostpath-v2"
+          test ! -L "$HOME/.local/bin/ghostpath-v2"
+          test ! -e "$HOME/.local/share/ghostpath-v2"
+          echo "User-scoped install/update/uninstall smoke test passed."
