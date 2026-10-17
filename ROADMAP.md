@@ -1,45 +1,52 @@
-# GhostPath v2 — Proposed Development Roadmap
+# GhostPath v2 — Development Roadmap
 
-Status: **Planning only**. Nothing on this page is implemented by the documentation update.
+## Implemented in 2.0.0a4
+- [x] Preserve legacy-v1 and develop-v2 branches
+- [x] Python CLI, package metadata, automated tests
+- [x] Local Tor, Nyx, Privoxy and NetworkManager diagnostics
+- [x] Local SOCKS5 greeting verification and resolver-status report
+- [x] MAC interface privacy summary and safe plan previews
+- [x] Connected Wi-Fi encryption posture assessments
+- [x] Offline Ethernet/802.11/radiotap PCAP metadata inspection
+- [x] Offline DDoS-event CSV anomaly detection and synthetic scenarios
+- [x] Read-only Linux interface counters
+- [x] Four offline educational labs and exportable JSON reports
+- [x] Optional PySide6 diagnostic GUI and non-root setup
+- [x] Security policy and user/development/go-live documentation
 
-## Phase 0: Ownership and inventory (blocker)
-- Confirm upstream licence and redistribution permissions.
-- Audit package dependencies, distro support and permission requirements.
-- Record every file and networking configuration the legacy installer can mutate.
-- Establish disposable VM test images and baseline connectivity metrics.
+## Must be completed before claiming stable or operational protection
+- [ ] Kali Linux real VM smoke tests and PySide6 GUI validation
+- [ ] Debian/Parrot compatibility matrix
+- [ ] Privileged helper design with explicit consent and permissions
+- [ ] NetworkManager D-Bus MAC randomisation with safe transaction/rollback
+- [ ] Authenticated Tor control and verified application SOCKS routing
+- [ ] Independently validated DNS and IP leak checks
+- [ ] Reliable nftables/DNS crash and reboot restoration if system changes added
+- [x] Offline Suricata EVE and Zeek JSON parsing with fixture tests
+- [ ] Advanced user-facing learning content and accessibility review
+- [x] User-only installation, packaging, update and uninstall CI testing
+- [ ] Real device install, update and uninstall QA
+- [ ] Third-party provenance and license review
+- [x] Development artifact build, SBOM and provenance workflow (verify CI)
+- [ ] Manual dependency and licensing audit; independent release signing approval
+- [ ] Independent security review and owner sign-off
 
-## Phase 1: Safe operations (critical)
-- Make dry-run default for installer, and require explicit confirmation for changes.
-- Snapshot and restore all affected DNS, firewall, Tor and service configurations.
-- Introduce safe interruption, rollback and idempotent uninstall.
-- Test recovery after failed installation, crash and reboot.
-- **Exit criteria:** baseline state restored and connectivity verified in repeatable VM tests.
+## Boundaries
+No uncontrolled Wi-Fi intrusion, password interception, disconnection
+or external traffic flooding is planned. Education and defensive
+analysis operate on authorised local data or isolated synthetic labs.
 
-## Phase 2: Modern networking (critical)
-- Integrate maintained Tor, nftables and systemd service APIs.
-- Respect NetworkManager and systemd-resolved and avoid conflicting ownership.
-- Implement opt-in, reversible kill-switch behaviour.
-- Detect IPv4, IPv6 and DNS routing discrepancies and explicitly document limits of WebRTC checks.
-- **Exit criteria:** leak and recovery tests pass in each supported VM platform.
+## Release stage
+2.0.0a4 = development alpha. See docs/RELEASE_CHECKLIST.md for NO-GO
+status and the evidence needed before declaring GhostPath stable.
 
-## Phase 3: New app (high)
-- Python 3 CLI with informative status, diagnostic and rollback commands.
-- PySide6 GUI without unnecessary root privileges; supported privileged helper.
-- Clear health indicators; privacy-preserving local logs and export.
-- **Exit criteria:** CLI and GUI show matching status; error paths recover cleanly.
 
-## Phase 4: Optional integrations (medium)
-- Review I2P and Privoxy integrations; drop Polipo.
-- Optional MAC/hostname modification with explicit consent and reliable restoration.
-- Add isolated training scenarios on DNS, Tor and firewall fundamentals.
+### Alpha completion versus production release
 
-## Phase 5: Release readiness (critical)
-- CI with static analysis, shellcheck, Python tests, package manifest and dependency scan.
-- Supported distro matrix; manual restore and uninstall validation.
-- Versioned release notes and honest privacy-limitations documentation.
-- **Exit criteria:** a release is not labelled ready until rollback, leak checks and clean-uninstall tests succeed.
-
-## Not in scope
-- Claims of untraceability or guaranteed anonymity.
-- Access to third-party devices or networks without authorisation.
-- Silent persistence, evasion or unauthorised monitoring features.
+The currently supported **read-only and offline** features are implemented
+and covered by automated tests. This does not mean GhostPath is finished
+as a production privacy-routing product. No active MAC address changes,
+system Tor tunnelling, DNS rewriting, credential attacks, disruptive
+wireless operations or public-target traffic flooding are available.
+A public stable release requires real hardware QA, rights clearance and
+security sign-off; see docs/KALI_ACCEPTANCE.md.

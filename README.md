@@ -1,67 +1,180 @@
-# GhostPath
+# GhostPath v2 — Python Security Toolkit
 
-**Linux Privacy & Network Security Toolkit**
+**Current development version: 2.0.0a4 (alpha).**
+Privacy diagnostics, defensive Wi-Fi assessments and offline DDoS education.
+**This is NOT a production anonymity tool, live Wi-Fi attack suite, or DDoS generator.**
 
-GhostPath is a Linux-based, education-focused project for studying Tor routing, proxy settings, network diagnostics, and privacy controls on devices and lab networks you own or have permission to manage.
+GhostPath v2 is a local-first Python 3 rebuild. It does not silently change
+firewall, DNS, network routing, MAC addresses or service states. All real
+traffic-related capabilities are read-only; training scenarios are offline.
+Running Tor is not evidence that applications use Tor.
 
-> **Development status:** This is a rebranded, untested legacy codebase. Changing names does not modernize its networking behaviour. **Do not run the installer on your everyday operating system.** Use a disposable VM and a snapshot. No anonymity guarantee is provided.
+## Features already implemented
 
-## What is included today
+| Module | Available today |
+| --- | --- |
+| Diagnostics | Tor, Privoxy, Nyx and NetworkManager presence/status |
+| Privacy | Loopback-only SOCKS5 handshake check and local DNS config review |
+| MAC Privacy | Interface inventory without publishing raw MACs; profile previews |
+| Wi-Fi Security | Cached connected-network review and WPA2/WPA3/WEP posture guidance |
+| Offline PCAP | Strict-size classic PCAP metadata parsing; no packet payload export |
+| DDoS Defence | Cumulative local counters, bounded CSV anomaly analysis, synthetic scenarios |
+| Learning | Four offline guided lab exercises |
+| Reports | Explicitly requested new local JSON reports with private file permissions |
+| Desktop | Optional PySide6 multi-tab read-only dashboard |
+| Quality | Automated Python tests, CI, security policy and release criteria |
 
-- `ghostpath` — main command-line entry point
-- `ghostpath-on` / `ghostpath-off` — historical convenience scripts
-- `ghostpath-gui` — older GTKdialog launcher
-- Tor, Privoxy, and Polipo example configurations
-- Scripts interacting with firewall rules, DNS settings, network identity, and services
+Not implemented: system-wide Tor routing, verified leak protection, active MAC
+changes, real-time DDoS mitigation, wireless intrusion or disruptive traffic,
+full platform compatibility, safe restore from legacy sessions. The v2 GUI
+is a development interface, not a validated stable release.
 
-**Not yet implemented or validated:** current Kali compatibility, nftables migration, modern GUI, reliable rollback, kill switch, CI tests, or production release.
+## Install for Kali Linux (normal user account, NOT root)
 
-## Repository layout
+If you previously installed the Bash version, do NOT run its old installer or
+the old ghostpath-on/off commands. Work in a new folder.
 
-```text
-GhostPath/
-├── README.md
-├── ROADMAP.md
-├── INSTALL.sh
-├── ghostpath.desktop
-├── ghostpath.png
-├── etc/ghostpath.sh
-├── usr/ghostpath
-├── usr/ghostpath-on
-├── usr/ghostpath-off
-├── opt/ghostpath/ghostpath-gui
-├── tor/torrc
-├── polipo/config
-└── privoxy/config
+```bash
+cd ~/Desktop
+git clone -b develop-v2 https://github.com/vishaalzala/GhostPath.git GhostPath-v2
+cd GhostPath-v2
+bash scripts/setup-dev.sh
+.venv/bin/ghostpath --version
+.venv/bin/ghostpath doctor --json
 ```
 
-## Getting started safely
+If Python venv creation fails, use the Kali package manager to install
+`python3-venv` before rerunning setup. The installer only writes into the
+project-local Python virtual environment; it does not modify network settings.
 
-1. Clone the repository into a dedicated, isolated Linux VM.
-2. Read `INSTALL.sh` and all scripts before running them.
-3. Make a VM snapshot, especially before any change to DNS or firewall rules.
-4. Consider the bundled installation process *historical and unsupported* until its rollback and distro checks have been tested.
+### Optional desktop interface
 
-There is no recommended production installation command at this stage.
+```bash
+source .venv/bin/activate
+python -m pip install -e '.[gui]'
+ghostpath gui
+```
 
-## Roadmap
+A graphical desktop session is required. GUI dependencies are optional
+because they may be large and are not needed for terminal use.
 
-See [ROADMAP.md](ROADMAP.md) for the modernization checklist.
+## Usage
 
-## Responsible use
+```bash
+ghostpath doctor --json
+ghostpath status --json
+ghostpath privacy status --json
+ghostpath tor status --json
+ghostpath proxy status --json
+ghostpath mac status --json
+ghostpath mac profiles --json
+ghostpath mac plan stable --json
+ghostpath wifi audit --json
+ghostpath defense counters --json
+ghostpath defense demo --scenario surge --json
+ghostpath defense analyze --file data.csv --json
+ghostpath wifi capture --file authorized-sample.pcap --json
+ghostpath labs list --json
+ghostpath labs run traffic-anomaly --json
+ghostpath report create --output my-report.json --json
+ghostpath release-check --json
+```
 
-Run network experiments only on systems and networks you control or for which you have explicit authorization. Tor is not a promise of complete anonymity. Never rely on this unreleased tool to protect sensitive activity.
+For CSV input use a file with the columns `minute,requests,errors`.
+Minutes must increase; max 2,000 rows and 1 MB. All analysis is offline.
+Classic Ethernet, 802.11 and radiotap PCAPs are supported (up to 16 MB and
+10,000 packets); PCAPNG is not supported.
 
-## Credits and licensing
+See [User Guide](docs/USER_GUIDE.md) for examples, output interpretation,
+installation troubleshooting and privacy caveats.
 
-Original script comments attribute work to **HiroshimanRise**, **ParrotSec**, **cysec666**, and other contributors. Contributor attribution is retained in source files. The source archive did not include a clearly identified license; redistribution rights should be confirmed before a public release.
+## Testing
+
+```bash
+bash scripts/test.sh
+```
+
+GitHub Actions runs unit tests across Python 3.11–3.13 and builds packages.
+Passing CI does **not** prove Kali hardware compatibility, Tor routing,
+wireless security or anonymity.
+
+## Branches and safety
+
+- `legacy-v1`: frozen legacy networking code (not production-safe).
+- `develop-v2`: Python development and offline defensive training.
+- `main`: preserved until the project passes go-live release gates.
+
+Consult [Roadmap](ROADMAP.md), [Release Checklist](docs/RELEASE_CHECKLIST.md),
+[Security](SECURITY.md), [Architecture](docs/ARCHITECTURE.md), and
+[Provenance](CREDITS.md) before using or distributing the code.
+
+## Contributors and licensing
+
+Third-party legacy provenance remains under review. GhostPath v2 clean-room
+Python modules are developed independently, but the repository has not yet
+completed the rights review required for a public stable release.
+
+## Additional offline integrations (2.0.0a2)
+
+The integration build also supports router-configuration hardening checks,
+Suricata alert summaries, offline lessons and HTML reports. These do not
+connect to or disrupt any network.
+
+    .venv/bin/ghostpath wifi config --file examples/router.json --json
+    .venv/bin/ghostpath defense eve --file examples/eve.jsonl --json
+    .venv/bin/ghostpath defense zeek --file authorised-conn.log --json
+    .venv/bin/ghostpath learn list --json
+    .venv/bin/ghostpath learn show wifi --json
+    .venv/bin/ghostpath report html --output findings.html
+
+Example inputs are in the examples/ directory. The optional desktop
+interface has local-file importer tabs for owned-router JSON and EVE logs,
+plus an HTML export screen. HTML outputs can be printed to PDF.
+
+Release remains an **alpha** pending real Kali/GUI/hardware and licensing
+verification; see docs/RELEASE_CHECKLIST.md.
+
+For authorised offline Zeek connection JSON logs, see [Zeek Log Guide](docs/ZEEK_LOGS.md).
+
+## User-scoped installer, updates and removal
+
+The v2 alpha can be installed separately from the legacy project **without sudo**:
+
+```bash
+bash scripts/install-user.sh
+~/.local/bin/ghostpath-v2 doctor
+# After pulling updates:
+bash scripts/update-user.sh
+# To remove the user-scoped installation:
+bash scripts/uninstall-user.sh
+```
+
+For the optional Qt UI, use `--gui` when installing/updating. Details and
+safety restrictions are in [Installation and Maintenance](docs/INSTALLATION.md).
+
+Passive IPv6 interface state is now included in the privacy diagnostics,
+but **no IPv6 leak test or network protection** is claimed.
 
 
-## Kali dependency update (October 2026)
+## Release evidence, real Kali verification, and safe alpha installation
 
-- **Nyx** replaces the outdated Tor ARM monitoring package (`ghostpath start_nyx`).
-- **Privoxy** provides the HTTP proxy service (`ghostpath start_http_proxy`, `stop_http_proxy`, `status_http_proxy`).
-- The installer checks APT failures and places example configuration files under `/usr/local/share/ghostpath/examples/`, rather than overwriting system Tor/Privoxy configuration.
-- The old firewall/DNS routing engine remains unverified. Installing dependencies is **not** proof that transparent routing works or restores networking correctly.
+This is still a **development alpha**, not an anonymity service or a
+production penetration testing tool. The Python build deliberately makes
+no firewall, DNS, MAC or system routing changes.
 
-On a disposable VM only, inspect the installer then use `sudo ./INSTALL.sh`. Do not use this build for sensitive browsing.
+A non-root local acceptance check is available:
+
+    bash scripts/acceptance-local.sh
+
+It runs safe diagnostics and compares fingerprints of DNS, routes and
+forwarding state. It cannot certify nftables state, Tor anonymity or Wi-Fi
+driver compatibility. On a disposable Kali VM, follow the manual
+[Kali acceptance checklist](docs/KALI_ACCEPTANCE.md).
+
+GitHub Actions prepares development wheel/source artifacts, checksums,
+CycloneDX runtime inventory, and build attestations. See
+[Supply-chain verification](docs/SUPPLY_CHAIN.md). These are *not*
+signed stable production packages.
+
+The optional desktop GUI now also supports authorised offline Zeek JSON
+connection logs under the Zeek JSON tab. All imports are local and bounded.

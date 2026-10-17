@@ -1,0 +1,57 @@
+name: GhostPath v2 CI
+
+on:
+  push:
+    branches: [develop-v2]
+  pull_request:
+    branches: [main, develop-v2]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }} verification
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install local package and quality tools
+        run: |
+          python -m pip install --no-deps -e .
+          python -m pip install build ruff
+      - name: Compile Python
+        run: python -m compileall -q src tests
+      - name: Static failure checks
+        run: ruff check --select E9,F63,F7,F82 src tests
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Build source and wheel packages
+        run: python -m build
+      - name: Smoke test CLI
+        run: |
+          ghostpath --version
+          ghostpath doctor --json
+          ghostpath privacy status --json
+          ghostpath wifi audit --json
+          ghostpath defense demo --scenario surge --json
+          ghostpath labs list --json
+          ghostpath release-check --json
+          ghostpath wifi config --file examples/router.json --json
+          ghostpath defense eve --file examples/eve.jsonl --json
+          ghostpath learn list --json
+          ghostpath report html --output /tmp/ghostpath-ci-report.html --json
+      - name: Upload test build artifact
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghostpath-development-build
+          path: dist/*
+          retention-days: 7
