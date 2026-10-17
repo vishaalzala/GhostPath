@@ -1,0 +1,53 @@
+name: GhostPath Development Artifact Verification
+
+on:
+  push:
+    branches: [develop-v2]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install build and SBOM tooling
+        run: python -m pip install --upgrade build cyclonedx-bom
+      - name: Build wheel and source distribution
+        run: python -m build
+      - name: Create isolated runtime environment
+        run: |
+          python -m venv .runtime
+          .runtime/bin/python -m pip install --no-deps dist/ghostpath-*.whl
+          .runtime/bin/python -m ghostpath --version
+      - name: Generate CycloneDX runtime SBOM
+        run: |
+          cyclonedx-py environment .runtime/bin/python --of JSON --sv 1.6 -o dist/ghostpath-runtime.cdx.json
+          python -m json.tool dist/ghostpath-runtime.cdx.json > /dev/null
+      - name: Compute SHA-256 file hashes
+        run: |
+          cd dist
+          sha256sum *.whl *.tar.gz ghostpath-runtime.cdx.json > SHA256SUMS
+          sha256sum -c SHA256SUMS
+      - name: Attest development artifacts
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/ghostpath-runtime.cdx.json
+      - name: Upload development artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghostpath-v2-verified-development
+          path: dist/*
+          retention-days: 14

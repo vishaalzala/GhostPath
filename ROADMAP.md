@@ -1,6 +1,6 @@
 # GhostPath v2 — Development Roadmap
 
-## Implemented in 2.0.0a2
+## Implemented in 2.0.0a4
 - [x] Preserve legacy-v1 and develop-v2 branches
 - [x] Python CLI, package metadata, automated tests
 - [x] Local Tor, Nyx, Privoxy and NetworkManager diagnostics
@@ -22,11 +22,13 @@
 - [ ] Authenticated Tor control and verified application SOCKS routing
 - [ ] Independently validated DNS and IP leak checks
 - [ ] Reliable nftables/DNS crash and reboot restoration if system changes added
-- [ ] Optional Suricata/Zeek adapter with fixture tests
+- [x] Offline Suricata EVE and Zeek JSON parsing with fixture tests
 - [ ] Advanced user-facing learning content and accessibility review
-- [ ] Clean installation, packaging, upgrade and uninstall testing
+- [x] User-only installation, packaging, update and uninstall CI testing
+- [ ] Real device install, update and uninstall QA
 - [ ] Third-party provenance and license review
-- [ ] SBOM, signing, vulnerability disclosure, supply-chain audit
+- [x] Development artifact build, SBOM and provenance workflow (verify CI)
+- [ ] Manual dependency and licensing audit; independent release signing approval
 - [ ] Independent security review and owner sign-off
 
 ## Boundaries
@@ -35,5 +37,16 @@ or external traffic flooding is planned. Education and defensive
 analysis operate on authorised local data or isolated synthetic labs.
 
 ## Release stage
-2.0.0a2 = development alpha. See docs/RELEASE_CHECKLIST.md for NO-GO
+2.0.0a4 = development alpha. See docs/RELEASE_CHECKLIST.md for NO-GO
 status and the evidence needed before declaring GhostPath stable.
+
+
+### Alpha completion versus production release
+
+The currently supported **read-only and offline** features are implemented
+and covered by automated tests. This does not mean GhostPath is finished
+as a production privacy-routing product. No active MAC address changes,
+system Tor tunnelling, DNS rewriting, credential attacks, disruptive
+wireless operations or public-target traffic flooding are available.
+A public stable release requires real hardware QA, rights clearance and
+security sign-off; see docs/KALI_ACCEPTANCE.md.

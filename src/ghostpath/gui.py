@@ -11,6 +11,7 @@ import sys
 from .defense import analyze, example_events
 from .config_audit import audit_file as audit_router_file
 from .eve import summarize_eve
+from .zeek import summarize_zeek
 from .html_reports import save_html_report
 from .lessons import list_lessons, read_lesson
 from .reports import build_report
@@ -70,6 +71,7 @@ def main() -> int:
                 ("Learning Labs", "Offline exercises", list_labs),
                 ("Router JSON", "Authorised router settings from a local file only", lambda: {"hint": "Open a local JSON configuration file"}),
                 ("Suricata EVE", "Offline defensive IDS alert logs only", lambda: {"hint": "Open a local EVE JSONL file"}),
+                ("Zeek JSON", "Offline authorised Zeek connection logs, summaries only", lambda: {"hint": "Open an owned Zeek JSON connection log"}),
                 ("Learning", "Offline educational lessons", list_lessons),
                 ("Reports", "Export an escaped, private HTML report", lambda: {"hint": "Click Export HTML"}),
             ]
@@ -91,7 +93,7 @@ def main() -> int:
                         lambda _, view_title=title, c=selector:
                         self.run_task(view_title, lambda: plan(c.currentText()))
                     )
-                if title in ("Router JSON", "Suricata EVE"):
+                if title in ("Router JSON", "Suricata EVE", "Zeek JSON"):
                     open_file = QPushButton("Open Local File")
                     buttons.addWidget(open_file)
                     open_file.clicked.connect(lambda _, view_title=title: self.select_file(view_title))
@@ -146,6 +148,10 @@ def main() -> int:
                 name, _ = QFileDialog.getOpenFileName(self, "Offline Suricata EVE", "", "JSONL (*.jsonl *.json)")
                 if name:
                     self.run_task(title, lambda: summarize_eve(__import__("pathlib").Path(name)))
+            elif title == "Zeek JSON":
+                name, _ = QFileDialog.getOpenFileName(self, "Offline Zeek JSON connection log", "", "JSONL (*.jsonl *.json *.log)")
+                if name:
+                    self.run_task(title, lambda: summarize_zeek(__import__("pathlib").Path(name)))
 
         def export_html(self):
             name, _ = QFileDialog.getSaveFileName(self, "Private HTML report", "ghostpath-report.html", "HTML (*.html)")
