@@ -11,6 +11,7 @@ from . import __version__
 from .captures import inspect_pcap
 from .config_audit import audit_file as audit_router_file
 from .eve import summarize_eve
+from .zeek import summarize_zeek
 from .html_reports import save_html_report
 from .lessons import list_lessons, read_lesson
 from .defense import analyze, example_events, parse_csv
@@ -91,6 +92,9 @@ def make_parser() -> argparse.ArgumentParser:
     eve = sub.add_parser("eve", help="Summarise a local Suricata alert JSONL log")
     eve.add_argument("--file", required=True, type=Path)
     _json_option(eve)
+    zeek = sub.add_parser("zeek", help="Summarise an authorised offline Zeek JSON connection log")
+    zeek.add_argument("--file", required=True, type=Path)
+    _json_option(zeek)
     capture = sub.add_parser("capture", help="Inspect metadata of a local classic PCAP")
     capture.add_argument("--file", required=True, type=Path)
     _json_option(capture)
@@ -167,6 +171,8 @@ def main(argv: list[str] | None = None) -> int:
                 result = inspect_pcap(args.file)
             elif args.action == "eve":
                 result = summarize_eve(args.file)
+            elif args.action == "zeek":
+                result = summarize_zeek(args.file)
             else:
                 result = counters()
         elif args.command == "labs":
