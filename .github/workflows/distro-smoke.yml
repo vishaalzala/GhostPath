@@ -1,0 +1,38 @@
+name: GhostPath Distro Container Smoke
+
+on:
+  push:
+    branches: [develop-v2]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - kalilinux/kali-rolling
+          - debian:trixie-slim
+    container:
+      image: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install Python in disposable container
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv python3-pip
+      - name: Build an isolated Python venv
+        run: |
+          python3 -m venv /tmp/ghostpath-ci
+          /tmp/ghostpath-ci/bin/python -m pip install --no-deps -e .
+      - name: Test without system services
+        run: |
+          /tmp/ghostpath-ci/bin/python -m unittest discover -s tests -v
+          /tmp/ghostpath-ci/bin/ghostpath doctor --json
+          /tmp/ghostpath-ci/bin/ghostpath release-check --json
+          /tmp/ghostpath-ci/bin/ghostpath wifi audit --json
+          /tmp/ghostpath-ci/bin/ghostpath defense demo --json

@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import os
 import platform
-from pathlib import Path
 
 from . import __version__
-from .network import interface_inventory, networkmanager_status
+from .network import networkmanager_status
+from .mac_privacy import status as mac_privacy_status
 from .services import nyx_status, proxy_status, tor_status
 
 
@@ -36,7 +36,7 @@ def status() -> dict[str, object]:
         "version": __version__,
         "tor": tor_status(),
         "proxy": proxy_status(),
-        "interfaces": interface_inventory(),
+        "mac": mac_privacy_status(),
         "firewall_managed": False,
         "dns_managed": False,
         "privacy_session": "not implemented",
