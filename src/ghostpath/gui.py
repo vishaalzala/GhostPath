@@ -24,7 +24,7 @@ def main() -> int:
         from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal
         from PySide6.QtWidgets import (
             QApplication, QComboBox, QHBoxLayout, QLabel, QMainWindow,
-            QMessageBox, QPlainTextEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget,
+            QPlainTextEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget,
         )
     except ImportError:
         print("Desktop UI requires optional PySide6: python -m pip install 'ghostpath[gui]'", file=sys.stderr)
@@ -80,7 +80,7 @@ def main() -> int:
                     buttons.addWidget(preview)
                     preview.clicked.connect(
                         lambda _, view_title=title, c=selector:
-                        self.run_task(view_title, lambda: plan(c.currentText()))
+                        self.run_task(view_title, lambda selected=c.currentText(): plan(selected))
                     )
                 if title == "Learning Labs":
                     selector = QComboBox()
@@ -90,7 +90,7 @@ def main() -> int:
                     buttons.addWidget(launch)
                     launch.clicked.connect(
                         lambda _, view_title=title, c=selector:
-                        self.run_task(view_title, lambda: run_lab(c.currentText()))
+                        self.run_task(view_title, lambda selected=c.currentText(): run_lab(selected))
                     )
                 layout.addLayout(buttons)
                 view = QPlainTextEdit()
