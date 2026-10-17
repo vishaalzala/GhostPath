@@ -11,17 +11,18 @@ class CliTests(unittest.TestCase):
     @patch("ghostpath.cli.doctor")
     def test_doctor_json(self, doctor):
         doctor.return_value = {"protected": False}
-        stream = io.StringIO()
-        with redirect_stdout(stream):
+        output = io.StringIO()
+        with redirect_stdout(output):
             self.assertEqual(main(["doctor", "--json"]), 0)
-        self.assertFalse(json.loads(stream.getvalue())["protected"])
+        self.assertFalse(json.loads(output.getvalue())["protected"])
 
-    @patch("ghostpath.cli.interface_inventory", return_value=[])
-    def test_mac_does_not_change_address(self, _):
-        stream = io.StringIO()
-        with redirect_stdout(stream):
+    @patch("ghostpath.cli.mac_status")
+    def test_mac_is_read_only(self, status):
+        status.return_value = {"can_apply": False, "interfaces": [], "profiles": []}
+        output = io.StringIO()
+        with redirect_stdout(output):
             self.assertEqual(main(["mac", "status", "--json"]), 0)
-        self.assertFalse(json.loads(stream.getvalue())["changes_supported"])
+        self.assertFalse(json.loads(output.getvalue())["can_apply"])
 
     def test_no_dangerous_commands(self):
         for args in (["start"], ["wifi", "attack"], ["ddos", "flood"], ["mac", "change"]):

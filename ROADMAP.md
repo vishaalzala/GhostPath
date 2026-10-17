@@ -1,45 +1,37 @@
-# GhostPath v2 Roadmap
+# GhostPath v2 Implementation & Go-live Roadmap
 
-## First milestone
-- [x] Archive existing code and history in legacy-v1
-- [x] Create develop-v2 Python development branch
-- [x] Read-only Python CLI with JSON results
-- [x] Tor, Privoxy and NetworkManager diagnostics
-- [x] Current MAC inventory and cached connected-Wi-Fi summary
-- [x] Initial mock-based unit tests and CI configuration
-- [x] New user guide and security policy
+## Code completed on the development branch
 
-## Phase 1 — Remaining foundation work
-- [ ] CI results checked for supported Python versions
-- [ ] Kali/Debian disposable-VM smoke tests
-- [ ] Improve package-specific remediation and OS compatibility detection
-- [ ] Privacy-safe structured diagnostics and support bundles
-- [ ] Licensing/provenance review and release policy
+- [x] Python 3 CLI and optional PySide6 desktop dashboard
+- [x] Tor/Privoxy and DNS status diagnostics
+- [x] Read-only MAC inventory and NetworkManager privacy profile preview
+- [x] Connected-Wi-Fi posture analysis
+- [x] Offline WPA2/WPA3/WPS/PMF owned-router configuration assessment
+- [x] Bounded classic PCAP metadata review with no payload export
+- [x] Offline synthetic DDoS anomaly analysis and CSV importer
+- [x] Offline Suricata EVE alert aggregation without exporting IPs
+- [x] Offline educational labs and lessons
+- [x] Privacy-reduced JSON and escaped HTML local reports
+- [x] Non-root developer installation, unit tests and CI workflow
+- [x] Legacy isolation, security policy, release checklist, user guide
 
-## Phase 2 — Tor and network safety
-- [ ] Tor SOCKS/control integration and independent health verification
-- [ ] Privoxy compatibility and safe configuration validation
-- [ ] DNS/IPv4/IPv6 diagnostic checks
-- [ ] Privilege separation with narrowly scoped helper
-- [ ] Network transaction journal, rollback and recovery testing
+## Not completed: production release blockers
 
-## Phase 3 — MAC and wireless posture
-- [ ] NetworkManager MAC privacy profiles with restore
-- [ ] WPA2/WPA3 and PMF security posture on authorized networks
-- [ ] Optional passive wireless monitor adapter
-- [ ] Offline capture review and educational lab analysis
+- [ ] Perform clean Kali and Debian VM installation and full smoke tests
+- [ ] GUI run and accessibility verification on a real Linux desktop
+- [ ] Verify supported internal and external Wi-Fi hardware/driver matrix
+- [ ] Complete Tor SOCKS circuit health and independent application routing checks
+- [ ] Implement opt-in MAC changes only after tested rollback and driver compatibility
+- [ ] Implement any system-wide firewall/DNS mutation only after recovery audits
+- [ ] Demonstrate restore after crashes, power failure and reboots
+- [ ] Package/sign releases, make SBOM and third-party license review
+- [ ] Complete threat model, dependency audit and external code security review
+- [ ] Establish supported operating systems and maintainer vulnerability channels
 
-## Phase 4 — DDoS defence
-- [ ] Synthetic and authorized offline traffic datasets
-- [ ] Alert baselines and anomalous event analysis
-- [ ] Optional Suricata/Zeek import
-- [ ] Isolated training exercises and egress isolation tests
+## Project principles
 
-## Phase 5 — GUI and release
-- [ ] PySide6 desktop interface
-- [ ] Local learning centre, reports, accessibility
-- [ ] Debian package, tested installer, updater, clean uninstall
-- [ ] Signed releases, SBOM, regression/security/rollback validation
+The alpha never transmits network floods, disconnects wireless clients,
+attempts passwords, secretly accesses networks, or claims verified anonymity.
+High-risk system changes remain disabled until hardware/rollback testing.
 
-Stable release is blocked until errors, reboot recovery, firewall and DNS
-restoration, installation and upgrades pass documented tests.
+Read docs/RELEASE_CHECKLIST.md to decide when a stable go-live is warranted.

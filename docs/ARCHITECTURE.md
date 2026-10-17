@@ -1,25 +1,50 @@
 # GhostPath v2 Architecture
 
-The CLI and future GUI share an unprivileged Python diagnostics core.
-This alpha is read-only: it reads sysfs and runs narrowly allowlisted
-diagnostics with shell=False and bounded timeouts.
+## Unprivileged defensive core
 
-| Area | Module |
-| --- | --- |
-| CLI and JSON | src/ghostpath/cli.py |
-| Aggregate diagnostics | src/ghostpath/diagnostics.py |
-| Tor and Privoxy service inspection | src/ghostpath/services.py |
-| Local interfaces and cached connected Wi-Fi | src/ghostpath/network.py |
-| Approved subprocess calls | src/ghostpath/core/runner.py |
+The Python 3 CLI and optional PySide6 GUI share these modules:
 
-A running Tor service does not prove application traffic uses Tor;
-routing_verified remains false until an independently verified path exists.
+- services.py and privacy.py — systemd service, local SOCKS and resolver status
+- network.py, mac_privacy.py and wifi_audit.py — read-only interfaces and Wi-Fi posture
+- config_audit.py — offline owned-router WPA/WPS/PMF configuration review
+- captures.py — bounded classic PCAP metadata review without payload export
+- defense.py and traffic.py — offline traffic anomaly analysis and local counters
+- eve.py — offline Suricata EVE JSONL severity/category aggregation
+- labs.py and lessons.py — deterministic offline education
+- reports.py and html_reports.py — private local JSON and escaped HTML exports
+- release.py — release blockers and evidence requirements
+- core/runner.py — narrowly allowlisted read-only subprocess calls
 
-The initial command runner cannot change routing, DNS, firewall, MAC, radio,
-or process service state. Do not operate the whole application as root.
+No remote-target selection, flood generator, interference, password
+retrieval or packet injection is implemented. GUI runs unprivileged.
+Classic PCAP import does not provide a live capture interface.
 
-Any future privileged helper must have explicit authorization, capability
-limits, transaction snapshots, rollback, restart recovery, and fault tests.
+## Privacy claims
 
-Initial compatibility target: Python 3.11+, Kali Linux test VMs;
-other distributions require documented tests before declaring support.
+A running Tor service or local SOCKS listener does not prove anonymity.
+No transparent routing, system-wide firewall change, DNS replacement or
+automatic kill switch is provided. DNS settings inspection is not a
+leak test. Read docs/RELEASE_CHECKLIST.md for unimplemented gate items.
+
+## Data and resource boundaries
+
+- Router config assessment: local JSON <=256 KB.
+- Suricata JSONL: local file <=8 MB, maximum 50,000 lines.
+- Existing defensive CSV import: <=1 MB, maximum 2,000 rows.
+- Classic PCAP: <=16 MB, <=10,000 packets; no payload output.
+- Reports: exclusive file creation with 0600 permissions; review before sharing.
+- No automatic telemetry or outbound API requests.
+
+## Future production system-control design
+
+Any future privileged helper must be separately reviewed and include
+capability separation, immutable policy validation, network snapshots,
+transaction logs, process-crash handling, reboot recovery, automated
+VM fault testing and complete uninstall. Do not grant the entire GUI
+root privileges or flush unrelated firewall rules.
+
+## Licensing
+
+The old shell scripts are archived on legacy-v1 with source attribution.
+Original redistribution rights are unverified and must be resolved before
+stable public packaging.

@@ -1,50 +1,142 @@
-# GhostPath v2 Alpha — User Guide
+# GhostPath v2 — Practical User Guide
 
-GhostPath v2 is a development diagnostic utility, NOT an anonymising
-traffic-routing application. Use on an owned computer with a normal
-unprivileged user account.
+**Development build: v2.0.0a2. Only local diagnostics and offline defensive
+training are available. It is NOT an anonymising VPN or Tor router.**
 
-## Install
-Follow the Python venv steps in README.md on the develop-v2 branch.
+## 1. Installation on Kali Linux
 
-## Confirm version
-Run: `ghostpath --version`. Expect v2.0.0a1.
+Use a normal Kali user account (not the root@kali prompt):
 
-## Basic health
-Run: `ghostpath doctor --json`. Check dependencies, systemd services,
-NetworkManager and any root-user warning. No network settings are changed.
+    git clone -b develop-v2 https://github.com/vishaalzala/GhostPath.git GhostPath-v2
+    cd GhostPath-v2
+    bash scripts/setup-dev.sh
+    .venv/bin/ghostpath --version
 
-## Tor and Privoxy
-Run `ghostpath tor status` and `ghostpath proxy status`.
-A service may be missing or inactive; neither result means traffic is
-anonymously routed. GhostPath alpha will not start these services.
+This creates a private Python virtual environment. It does not
+change any system firewall, DNS, Wi-Fi or MAC settings.
 
-## MAC status
-Run `ghostpath mac status --json`.
-This shows locally visible MACs but does NOT change them. Do not post
-identifying addresses publicly.
+## 2. System health
 
-## Wi-Fi status
-Run `ghostpath wifi status --json`. Only existing cached information
-about a connected access point is displayed; no new Wi-Fi scan starts.
-Wi-Fi audits and offline capture lessons are planned, not implemented.
+    .venv/bin/ghostpath doctor --json
+    .venv/bin/ghostpath status --json
 
-## DDoS defence
-The DDoS module is planned and will use synthetic/authorized offline data.
-No active public-target disruption or traffic flooding will be provided.
+These show available local services. Tor running does not prove
+that traffic uses Tor. The application does not enable privacy routing.
 
-## Troubleshooting
-- GhostPath command missing: activate the venv, reinstall editable package.
-- Tor not installed: the diagnostic still reports missing dependency.
-- Unknown service status: systemd or the specific unit may be unavailable.
-- Wi-Fi unavailable: check whether NetworkManager/nmcli is installed.
-- If on old GhostPath: switch to develop-v2 and use its Python command.
+## 3. Privacy status
 
-## Updating
-In the same development checkout:
-`git pull origin develop-v2`; activate venv, then
-`python -m pip install --no-deps -e .`.
+    .venv/bin/ghostpath privacy status --json
+    .venv/bin/ghostpath tor status --json
+    .venv/bin/ghostpath proxy status --json
 
-## Reporting issues
-Redact IP addresses, SSIDs, MAC addresses and other private identifiers
-before attaching diagnostic output to GitHub.
+This checks local Tor SOCKS reachability and resolver configuration.
+It is not an external DNS-leak test or proof of anonymous browsing.
+
+## 4. MAC privacy
+
+    .venv/bin/ghostpath mac status --json
+    .venv/bin/ghostpath mac profiles --json
+    .venv/bin/ghostpath mac plan stable --json
+
+The plan shows what a privacy profile would mean, but **does not
+apply a new MAC**. MAC addresses remain visible on their local link.
+
+## 5. Wi-Fi review
+
+    .venv/bin/ghostpath wifi status --json
+    .venv/bin/ghostpath wifi audit --json
+
+The current connection is inspected without starting a scan.
+For a router you own, write a local settings JSON file (example
+available in examples/router.json):
+
+    {
+      "security": "WPA3",
+      "wps_enabled": false,
+      "pmf": "required",
+      "guest_isolation": true
+    }
+
+Run:
+
+    .venv/bin/ghostpath wifi config --file examples/router.json --json
+
+No Wi-Fi password attempt, connection or radio transmission occurs.
+To analyse *existing authorised* classic PCAP files (not PCAPNG):
+
+    .venv/bin/ghostpath wifi capture --file ./owned-capture.pcap --json
+
+Only bounded frame-type metadata is output.
+
+## 6. DDoS Defence & Incident Analysis
+
+To explore synthetic traffic counts with a baseline:
+
+    .venv/bin/ghostpath defense demo --scenario surge --json
+
+To analyse your saved/offline event counts:
+
+    .venv/bin/ghostpath defense analyze --file examples/traffic.csv --json
+
+CSV columns: minute,requests,errors. Values must be nonnegative
+integers; minutes must increase. A flagged rise is not proof of attack.
+
+To aggregate offline Suricata alert events:
+
+    .venv/bin/ghostpath defense eve --file examples/eve.jsonl --json
+
+Source/destination IPs are omitted in the aggregate report.
+
+## 7. Learning and safe labs
+
+    .venv/bin/ghostpath labs list --json
+    .venv/bin/ghostpath labs run traffic-anomaly --json
+    .venv/bin/ghostpath learn list --json
+    .venv/bin/ghostpath learn show wifi --json
+
+These lessons and simulations work offline and do not send any
+disruptive traffic.
+
+## 8. Reports
+
+    .venv/bin/ghostpath report create --output findings.json
+    .venv/bin/ghostpath report html --output findings.html
+
+Reports are written locally as new private files and refuse to
+overwrite an existing file. The HTML report is escaped; you can open
+it in a browser and print to PDF. Review content before sharing.
+
+## 9. GUI
+
+    source .venv/bin/activate
+    python -m pip install '.[gui]'
+    ghostpath gui
+
+The optional desktop view shows status, MAC plans, Wi-Fi posture,
+defensive labs, offline file imports, education and reports.
+Do not run the desktop interface as root.
+
+## 10. Updating and troubleshooting
+
+Update the v2 checkout:
+
+    git pull origin develop-v2
+    bash scripts/setup-dev.sh
+    bash scripts/test.sh
+
+Common issues:
+- Module/command not found: run the executable inside .venv/bin.
+- Missing python3-venv: install it from Kali APT.
+- Missing Tor or NetworkManager: those diagnostics report unavailable.
+- GUI fails: ensure a graphical Linux session and PySide6 in the venv.
+- Existing legacy GhostPath broke internet: use your VM snapshot;
+  the Python v2 utility does not undo old legacy system changes.
+- File analysis error: check offline format and bounded file sizes.
+- Report already exists: select a different output filename.
+
+## What is still excluded?
+
+This build cannot anonymise entire systems, change MAC addresses,
+test Wi-Fi passwords, flood networks, enforce a kill switch,
+or automatically repair external network configuration.
+See the release checklist for the remaining tests and engineering.

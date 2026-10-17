@@ -1,0 +1,6 @@
+{
+  "security": "WPA2",
+  "wps_enabled": true,
+  "pmf": "disabled",
+  "guest_isolation": false
+}
